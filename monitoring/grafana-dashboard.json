@@ -1,0 +1,1886 @@
+{
+  "dashboard": {
+    "title": "Context Engine Service - Production Monitoring",
+    "uid": "context-engine-prod",
+    "tags": ["luris", "context-engine", "microservices", "production"],
+    "timezone": "browser",
+    "editable": true,
+    "fiscalYearStartMonth": 0,
+    "graphTooltip": 1,
+    "id": null,
+    "links": [
+      {
+        "asDropdown": false,
+        "icon": "external link",
+        "includeVars": false,
+        "keepTime": true,
+        "tags": [],
+        "targetBlank": true,
+        "title": "Context Engine API Docs",
+        "tooltip": "View API documentation",
+        "type": "link",
+        "url": "http://10.10.0.87:8015/docs"
+      },
+      {
+        "asDropdown": false,
+        "icon": "external link",
+        "includeVars": false,
+        "keepTime": true,
+        "tags": [],
+        "targetBlank": true,
+        "title": "Prometheus Alerts",
+        "tooltip": "View Prometheus alert rules",
+        "type": "link",
+        "url": "http://prometheus:9090/alerts"
+      },
+      {
+        "asDropdown": false,
+        "icon": "doc",
+        "includeVars": false,
+        "keepTime": true,
+        "tags": [],
+        "targetBlank": true,
+        "title": "Service Logs",
+        "tooltip": "View service logs",
+        "type": "link",
+        "url": "/explore?left=%5B%22now-1h%22,%22now%22,%22Loki%22,%7B%22expr%22:%22%7Bjob%3D%5C%22context-engine%5C%22%7D%22%7D%5D"
+      }
+    ],
+    "liveNow": false,
+    "panels": [
+      {
+        "collapsed": false,
+        "gridPos": {"h": 1, "w": 24, "x": 0, "y": 0},
+        "id": 100,
+        "panels": [],
+        "title": "Service Health Overview",
+        "type": "row"
+      },
+      {
+        "datasource": {"type": "prometheus", "uid": "${datasource}"},
+        "fieldConfig": {
+          "defaults": {
+            "color": {"mode": "thresholds"},
+            "mappings": [
+              {"options": {"0": {"color": "red", "index": 0, "text": "DOWN"}}, "type": "value"},
+              {"options": {"1": {"color": "green", "index": 1, "text": "UP"}}, "type": "value"}
+            ],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {"color": "red", "value": null},
+                {"color": "green", "value": 1}
+              ]
+            },
+            "unit": "none"
+          },
+          "overrides": []
+        },
+        "gridPos": {"h": 6, "w": 4, "x": 0, "y": 1},
+        "id": 1,
+        "options": {
+          "colorMode": "background",
+          "graphMode": "none",
+          "justifyMode": "center",
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": ["lastNotNull"],
+            "fields": "",
+            "values": false
+          },
+          "textMode": "value_and_name"
+        },
+        "pluginVersion": "9.5.0",
+        "targets": [
+          {
+            "datasource": {"type": "prometheus", "uid": "${datasource}"},
+            "expr": "up{job=\"context-engine\"}",
+            "refId": "A"
+          }
+        ],
+        "title": "Service Status",
+        "type": "stat"
+      },
+      {
+        "datasource": {"type": "prometheus", "uid": "${datasource}"},
+        "fieldConfig": {
+          "defaults": {
+            "color": {"mode": "palette-classic"},
+            "custom": {
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "drawStyle": "line",
+              "fillOpacity": 10,
+              "gradientMode": "none",
+              "hideFrom": {"tooltip": false, "viz": false, "legend": false},
+              "lineInterpolation": "linear",
+              "lineWidth": 2,
+              "pointSize": 5,
+              "scaleDistribution": {"type": "linear"},
+              "showPoints": "never",
+              "spanNulls": false,
+              "stacking": {"group": "A", "mode": "none"},
+              "thresholdsStyle": {"mode": "off"}
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {"color": "green", "value": null}
+              ]
+            },
+            "unit": "reqps"
+          },
+          "overrides": []
+        },
+        "gridPos": {"h": 6, "w": 7, "x": 4, "y": 1},
+        "id": 2,
+        "options": {
+          "legend": {
+            "calcs": ["mean", "lastNotNull", "max"],
+            "displayMode": "table",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {"mode": "multi", "sort": "desc"}
+        },
+        "pluginVersion": "9.5.0",
+        "targets": [
+          {
+            "datasource": {"type": "prometheus", "uid": "${datasource}"},
+            "expr": "sum(rate(context_engine_requests_total[1m]))",
+            "legendFormat": "1m rate",
+            "refId": "A"
+          },
+          {
+            "datasource": {"type": "prometheus", "uid": "${datasource}"},
+            "expr": "sum(rate(context_engine_requests_total[5m]))",
+            "legendFormat": "5m rate",
+            "refId": "B"
+          },
+          {
+            "datasource": {"type": "prometheus", "uid": "${datasource}"},
+            "expr": "sum(rate(context_engine_requests_total[15m]))",
+            "legendFormat": "15m rate",
+            "refId": "C"
+          }
+        ],
+        "title": "Request Rate",
+        "type": "timeseries"
+      },
+      {
+        "datasource": {"type": "prometheus", "uid": "${datasource}"},
+        "fieldConfig": {
+          "defaults": {
+            "color": {"mode": "thresholds"},
+            "mappings": [],
+            "max": 1,
+            "min": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {"color": "green", "value": null},
+                {"color": "yellow", "value": 0.01},
+                {"color": "orange", "value": 0.05},
+                {"color": "red", "value": 0.20}
+              ]
+            },
+            "unit": "percentunit"
+          },
+          "overrides": []
+        },
+        "gridPos": {"h": 6, "w": 4, "x": 11, "y": 1},
+        "id": 3,
+        "options": {
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": ["lastNotNull"],
+            "fields": "",
+            "values": false
+          },
+          "showThresholdLabels": false,
+          "showThresholdMarkers": true
+        },
+        "pluginVersion": "9.5.0",
+        "targets": [
+          {
+            "datasource": {"type": "prometheus", "uid": "${datasource}"},
+            "expr": "sum(rate(context_engine_requests_total{status=~\"5..\"}[5m])) / sum(rate(context_engine_requests_total[5m]))",
+            "refId": "A"
+          }
+        ],
+        "title": "Error Rate % (5m)",
+        "type": "gauge"
+      },
+      {
+        "datasource": {"type": "prometheus", "uid": "${datasource}"},
+        "fieldConfig": {
+          "defaults": {
+            "color": {"mode": "palette-classic"},
+            "custom": {
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "drawStyle": "line",
+              "fillOpacity": 10,
+              "gradientMode": "none",
+              "hideFrom": {"tooltip": false, "viz": false, "legend": false},
+              "lineInterpolation": "linear",
+              "lineWidth": 2,
+              "pointSize": 5,
+              "scaleDistribution": {"type": "linear"},
+              "showPoints": "never",
+              "spanNulls": false,
+              "stacking": {"group": "A", "mode": "none"},
+              "thresholdsStyle": {"mode": "off"}
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {"color": "green", "value": null}
+              ]
+            },
+            "unit": "short"
+          },
+          "overrides": []
+        },
+        "gridPos": {"h": 6, "w": 5, "x": 15, "y": 1},
+        "id": 4,
+        "options": {
+          "legend": {
+            "calcs": ["lastNotNull"],
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {"mode": "multi", "sort": "none"}
+        },
+        "pluginVersion": "9.5.0",
+        "targets": [
+          {
+            "datasource": {"type": "prometheus", "uid": "${datasource}"},
+            "expr": "context_engine_active_connections",
+            "legendFormat": "Active",
+            "refId": "A"
+          }
+        ],
+        "title": "Active Connections",
+        "type": "timeseries"
+      },
+      {
+        "datasource": {"type": "prometheus", "uid": "${datasource}"},
+        "fieldConfig": {
+          "defaults": {
+            "color": {"mode": "palette-classic"},
+            "custom": {
+              "hideFrom": {"tooltip": false, "viz": false, "legend": false}
+            },
+            "mappings": []
+          },
+          "overrides": []
+        },
+        "gridPos": {"h": 6, "w": 4, "x": 20, "y": 1},
+        "id": 5,
+        "options": {
+          "displayLabels": ["percent"],
+          "legend": {
+            "displayMode": "table",
+            "placement": "right",
+            "showLegend": true,
+            "values": ["value"]
+          },
+          "pieType": "donut",
+          "reduceOptions": {
+            "calcs": ["lastNotNull"],
+            "fields": "",
+            "values": false
+          },
+          "tooltip": {"mode": "single", "sort": "none"}
+        },
+        "pluginVersion": "9.5.0",
+        "targets": [
+          {
+            "datasource": {"type": "prometheus", "uid": "${datasource}"},
+            "expr": "sum by (status) (rate(context_engine_requests_total[5m]))",
+            "legendFormat": "{{status}}",
+            "refId": "A"
+          }
+        ],
+        "title": "Response Status Distribution",
+        "type": "piechart"
+      },
+      {
+        "collapsed": false,
+        "gridPos": {"h": 1, "w": 24, "x": 0, "y": 7},
+        "id": 101,
+        "panels": [],
+        "title": "Performance Metrics",
+        "type": "row"
+      },
+      {
+        "datasource": {"type": "prometheus", "uid": "${datasource}"},
+        "fieldConfig": {
+          "defaults": {
+            "color": {"mode": "palette-classic"},
+            "custom": {
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "drawStyle": "line",
+              "fillOpacity": 10,
+              "gradientMode": "none",
+              "hideFrom": {"tooltip": false, "viz": false, "legend": false},
+              "lineInterpolation": "smooth",
+              "lineWidth": 2,
+              "pointSize": 5,
+              "scaleDistribution": {"type": "linear"},
+              "showPoints": "never",
+              "spanNulls": false,
+              "stacking": {"group": "A", "mode": "none"},
+              "thresholdsStyle": {"mode": "line"}
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {"color": "green", "value": null},
+                {"color": "yellow", "value": 2},
+                {"color": "red", "value": 3}
+              ]
+            },
+            "unit": "s"
+          },
+          "overrides": [
+            {
+              "matcher": {"id": "byName", "options": "P50"},
+              "properties": [
+                {"id": "color", "value": {"fixedColor": "green", "mode": "fixed"}}
+              ]
+            },
+            {
+              "matcher": {"id": "byName", "options": "P95"},
+              "properties": [
+                {"id": "color", "value": {"fixedColor": "yellow", "mode": "fixed"}}
+              ]
+            },
+            {
+              "matcher": {"id": "byName", "options": "P99"},
+              "properties": [
+                {"id": "color", "value": {"fixedColor": "red", "mode": "fixed"}}
+              ]
+            }
+          ]
+        },
+        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 8},
+        "id": 6,
+        "options": {
+          "legend": {
+            "calcs": ["mean", "lastNotNull", "max"],
+            "displayMode": "table",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {"mode": "multi", "sort": "desc"}
+        },
+        "pluginVersion": "9.5.0",
+        "targets": [
+          {
+            "datasource": {"type": "prometheus", "uid": "${datasource}"},
+            "expr": "histogram_quantile(0.50, sum(rate(context_engine_request_latency_seconds_bucket[5m])) by (le))",
+            "legendFormat": "P50",
+            "refId": "A"
+          },
+          {
+            "datasource": {"type": "prometheus", "uid": "${datasource}"},
+            "expr": "histogram_quantile(0.95, sum(rate(context_engine_request_latency_seconds_bucket[5m])) by (le))",
+            "legendFormat": "P95",
+            "refId": "B"
+          },
+          {
+            "datasource": {"type": "prometheus", "uid": "${datasource}"},
+            "expr": "histogram_quantile(0.99, sum(rate(context_engine_request_latency_seconds_bucket[5m])) by (le))",
+            "legendFormat": "P99",
+            "refId": "C"
+          }
+        ],
+        "title": "Request Latency Percentiles (P50/P95/P99)",
+        "type": "timeseries"
+      },
+      {
+        "datasource": {"type": "prometheus", "uid": "${datasource}"},
+        "fieldConfig": {
+          "defaults": {
+            "color": {"mode": "palette-classic"},
+            "custom": {
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "drawStyle": "line",
+              "fillOpacity": 10,
+              "gradientMode": "none",
+              "hideFrom": {"tooltip": false, "viz": false, "legend": false},
+              "lineInterpolation": "linear",
+              "lineWidth": 2,
+              "pointSize": 5,
+              "scaleDistribution": {"type": "linear"},
+              "showPoints": "never",
+              "spanNulls": false,
+              "stacking": {"group": "A", "mode": "normal"},
+              "thresholdsStyle": {"mode": "off"}
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {"color": "green", "value": null}
+              ]
+            },
+            "unit": "reqps"
+          },
+          "overrides": []
+        },
+        "gridPos": {"h": 8, "w": 12, "x": 12, "y": 8},
+        "id": 7,
+        "options": {
+          "legend": {
+            "calcs": ["mean", "lastNotNull", "max"],
+            "displayMode": "table",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {"mode": "multi", "sort": "desc"}
+        },
+        "pluginVersion": "9.5.0",
+        "targets": [
+          {
+            "datasource": {"type": "prometheus", "uid": "${datasource}"},
+            "expr": "sum by (dimension) (rate(context_engine_requests_total{dimension!=\"\"}[5m]))",
+            "legendFormat": "{{dimension}}",
+            "refId": "A"
+          }
+        ],
+        "title": "Throughput by Dimension",
+        "type": "timeseries"
+      },
+      {
+        "datasource": {"type": "prometheus", "uid": "${datasource}"},
+        "fieldConfig": {
+          "defaults": {
+            "custom": {
+              "hideFrom": {"tooltip": false, "viz": false, "legend": false},
+              "scaleDistribution": {"type": "linear"}
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {"h": 8, "w": 24, "x": 0, "y": 16},
+        "id": 8,
+        "options": {
+          "calculate": false,
+          "cellGap": 2,
+          "cellValues": {},
+          "color": {
+            "exponent": 0.5,
+            "fill": "dark-orange",
+            "mode": "scheme",
+            "reverse": false,
+            "scale": "exponential",
+            "scheme": "Spectral",
+            "steps": 128
+          },
+          "exemplars": {"color": "rgba(255,0,255,0.7)"},
+          "filterValues": {"le": 1e-9},
+          "legend": {"show": true},
+          "rowsFrame": {"layout": "auto"},
+          "tooltip": {"show": true, "yHistogram": false},
+          "yAxis": {
+            "axisPlacement": "left",
+            "reverse": false,
+            "unit": "s"
+          }
+        },
+        "pluginVersion": "9.5.0",
+        "targets": [
+          {
+            "datasource": {"type": "prometheus", "uid": "${datasource}"},
+            "expr": "sum(increase(context_engine_request_latency_seconds_bucket[1m])) by (le)",
+            "format": "heatmap",
+            "legendFormat": "{{le}}",
+            "refId": "A"
+          }
+        ],
+        "title": "Response Time Distribution (Heatmap)",
+        "type": "heatmap"
+      },
+      {
+        "collapsed": false,
+        "gridPos": {"h": 1, "w": 24, "x": 0, "y": 24},
+        "id": 102,
+        "panels": [],
+        "title": "Context Dimensions (WHO/WHAT/WHERE/WHEN/WHY)",
+        "type": "row"
+      },
+      {
+        "datasource": {"type": "prometheus", "uid": "${datasource}"},
+        "fieldConfig": {
+          "defaults": {
+            "color": {"mode": "palette-classic"},
+            "custom": {
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "drawStyle": "line",
+              "fillOpacity": 10,
+              "gradientMode": "none",
+              "hideFrom": {"tooltip": false, "viz": false, "legend": false},
+              "lineInterpolation": "linear",
+              "lineWidth": 2,
+              "pointSize": 5,
+              "scaleDistribution": {"type": "linear"},
+              "showPoints": "never",
+              "spanNulls": false,
+              "stacking": {"group": "A", "mode": "none"},
+              "thresholdsStyle": {"mode": "off"}
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {"color": "green", "value": null}
+              ]
+            },
+            "unit": "reqps"
+          },
+          "overrides": [
+            {
+              "matcher": {"id": "byName", "options": "Success Rate"},
+              "properties": [
+                {"id": "unit", "value": "percentunit"},
+                {"id": "custom.axisPlacement", "value": "right"},
+                {"id": "color", "value": {"fixedColor": "green", "mode": "fixed"}}
+              ]
+            }
+          ]
+        },
+        "gridPos": {"h": 6, "w": 8, "x": 0, "y": 25},
+        "id": 9,
+        "options": {
+          "legend": {
+            "calcs": ["mean", "lastNotNull"],
+            "displayMode": "table",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {"mode": "multi", "sort": "none"}
+        },
+        "pluginVersion": "9.5.0",
+        "targets": [
+          {
+            "datasource": {"type": "prometheus", "uid": "${datasource}"},
+            "expr": "sum(rate(context_engine_requests_total{dimension=\"who\"}[5m]))",
+            "legendFormat": "Requests/sec",
+            "refId": "A"
+          },
+          {
+            "datasource": {"type": "prometheus", "uid": "${datasource}"},
+            "expr": "sum(rate(context_engine_requests_total{dimension=\"who\",status!~\"5..\"}[5m])) / sum(rate(context_engine_requests_total{dimension=\"who\"}[5m]))",
+            "legendFormat": "Success Rate",
+            "refId": "B"
+          }
+        ],
+        "title": "WHO Dimension (Parties/Attorneys)",
+        "type": "timeseries"
+      },
+      {
+        "datasource": {"type": "prometheus", "uid": "${datasource}"},
+        "fieldConfig": {
+          "defaults": {
+            "color": {"mode": "palette-classic"},
+            "custom": {
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "drawStyle": "line",
+              "fillOpacity": 10,
+              "gradientMode": "none",
+              "hideFrom": {"tooltip": false, "viz": false, "legend": false},
+              "lineInterpolation": "linear",
+              "lineWidth": 2,
+              "pointSize": 5,
+              "scaleDistribution": {"type": "linear"},
+              "showPoints": "never",
+              "spanNulls": false,
+              "stacking": {"group": "A", "mode": "none"},
+              "thresholdsStyle": {"mode": "off"}
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {"color": "green", "value": null}
+              ]
+            },
+            "unit": "reqps"
+          },
+          "overrides": [
+            {
+              "matcher": {"id": "byName", "options": "Success Rate"},
+              "properties": [
+                {"id": "unit", "value": "percentunit"},
+                {"id": "custom.axisPlacement", "value": "right"},
+                {"id": "color", "value": {"fixedColor": "green", "mode": "fixed"}}
+              ]
+            }
+          ]
+        },
+        "gridPos": {"h": 6, "w": 8, "x": 8, "y": 25},
+        "id": 10,
+        "options": {
+          "legend": {
+            "calcs": ["mean", "lastNotNull"],
+            "displayMode": "table",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {"mode": "multi", "sort": "none"}
+        },
+        "pluginVersion": "9.5.0",
+        "targets": [
+          {
+            "datasource": {"type": "prometheus", "uid": "${datasource}"},
+            "expr": "sum(rate(context_engine_requests_total{dimension=\"what\"}[5m]))",
+            "legendFormat": "Requests/sec",
+            "refId": "A"
+          },
+          {
+            "datasource": {"type": "prometheus", "uid": "${datasource}"},
+            "expr": "sum(rate(context_engine_requests_total{dimension=\"what\",status!~\"5..\"}[5m])) / sum(rate(context_engine_requests_total{dimension=\"what\"}[5m]))",
+            "legendFormat": "Success Rate",
+            "refId": "B"
+          }
+        ],
+        "title": "WHAT Dimension (Legal Issues)",
+        "type": "timeseries"
+      },
+      {
+        "datasource": {"type": "prometheus", "uid": "${datasource}"},
+        "fieldConfig": {
+          "defaults": {
+            "color": {"mode": "palette-classic"},
+            "custom": {
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "drawStyle": "line",
+              "fillOpacity": 10,
+              "gradientMode": "none",
+              "hideFrom": {"tooltip": false, "viz": false, "legend": false},
+              "lineInterpolation": "linear",
+              "lineWidth": 2,
+              "pointSize": 5,
+              "scaleDistribution": {"type": "linear"},
+              "showPoints": "never",
+              "spanNulls": false,
+              "stacking": {"group": "A", "mode": "none"},
+              "thresholdsStyle": {"mode": "off"}
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {"color": "green", "value": null}
+              ]
+            },
+            "unit": "reqps"
+          },
+          "overrides": [
+            {
+              "matcher": {"id": "byName", "options": "Success Rate"},
+              "properties": [
+                {"id": "unit", "value": "percentunit"},
+                {"id": "custom.axisPlacement", "value": "right"},
+                {"id": "color", "value": {"fixedColor": "green", "mode": "fixed"}}
+              ]
+            }
+          ]
+        },
+        "gridPos": {"h": 6, "w": 8, "x": 16, "y": 25},
+        "id": 11,
+        "options": {
+          "legend": {
+            "calcs": ["mean", "lastNotNull"],
+            "displayMode": "table",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {"mode": "multi", "sort": "none"}
+        },
+        "pluginVersion": "9.5.0",
+        "targets": [
+          {
+            "datasource": {"type": "prometheus", "uid": "${datasource}"},
+            "expr": "sum(rate(context_engine_requests_total{dimension=\"where\"}[5m]))",
+            "legendFormat": "Requests/sec",
+            "refId": "A"
+          },
+          {
+            "datasource": {"type": "prometheus", "uid": "${datasource}"},
+            "expr": "sum(rate(context_engine_requests_total{dimension=\"where\",status!~\"5..\"}[5m])) / sum(rate(context_engine_requests_total{dimension=\"where\"}[5m]))",
+            "legendFormat": "Success Rate",
+            "refId": "B"
+          }
+        ],
+        "title": "WHERE Dimension (Jurisdiction/Venue)",
+        "type": "timeseries"
+      },
+      {
+        "datasource": {"type": "prometheus", "uid": "${datasource}"},
+        "fieldConfig": {
+          "defaults": {
+            "color": {"mode": "palette-classic"},
+            "custom": {
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "drawStyle": "line",
+              "fillOpacity": 10,
+              "gradientMode": "none",
+              "hideFrom": {"tooltip": false, "viz": false, "legend": false},
+              "lineInterpolation": "linear",
+              "lineWidth": 2,
+              "pointSize": 5,
+              "scaleDistribution": {"type": "linear"},
+              "showPoints": "never",
+              "spanNulls": false,
+              "stacking": {"group": "A", "mode": "none"},
+              "thresholdsStyle": {"mode": "off"}
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {"color": "green", "value": null}
+              ]
+            },
+            "unit": "reqps"
+          },
+          "overrides": [
+            {
+              "matcher": {"id": "byName", "options": "Success Rate"},
+              "properties": [
+                {"id": "unit", "value": "percentunit"},
+                {"id": "custom.axisPlacement", "value": "right"},
+                {"id": "color", "value": {"fixedColor": "green", "mode": "fixed"}}
+              ]
+            }
+          ]
+        },
+        "gridPos": {"h": 6, "w": 12, "x": 0, "y": 31},
+        "id": 12,
+        "options": {
+          "legend": {
+            "calcs": ["mean", "lastNotNull"],
+            "displayMode": "table",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {"mode": "multi", "sort": "none"}
+        },
+        "pluginVersion": "9.5.0",
+        "targets": [
+          {
+            "datasource": {"type": "prometheus", "uid": "${datasource}"},
+            "expr": "sum(rate(context_engine_requests_total{dimension=\"when\"}[5m]))",
+            "legendFormat": "Requests/sec",
+            "refId": "A"
+          },
+          {
+            "datasource": {"type": "prometheus", "uid": "${datasource}"},
+            "expr": "sum(rate(context_engine_requests_total{dimension=\"when\",status!~\"5..\"}[5m])) / sum(rate(context_engine_requests_total{dimension=\"when\"}[5m]))",
+            "legendFormat": "Success Rate",
+            "refId": "B"
+          }
+        ],
+        "title": "WHEN Dimension (Timeline/Events)",
+        "type": "timeseries"
+      },
+      {
+        "datasource": {"type": "prometheus", "uid": "${datasource}"},
+        "fieldConfig": {
+          "defaults": {
+            "color": {"mode": "palette-classic"},
+            "custom": {
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "drawStyle": "line",
+              "fillOpacity": 10,
+              "gradientMode": "none",
+              "hideFrom": {"tooltip": false, "viz": false, "legend": false},
+              "lineInterpolation": "linear",
+              "lineWidth": 2,
+              "pointSize": 5,
+              "scaleDistribution": {"type": "linear"},
+              "showPoints": "never",
+              "spanNulls": false,
+              "stacking": {"group": "A", "mode": "none"},
+              "thresholdsStyle": {"mode": "off"}
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {"color": "green", "value": null}
+              ]
+            },
+            "unit": "reqps"
+          },
+          "overrides": [
+            {
+              "matcher": {"id": "byName", "options": "Success Rate"},
+              "properties": [
+                {"id": "unit", "value": "percentunit"},
+                {"id": "custom.axisPlacement", "value": "right"},
+                {"id": "color", "value": {"fixedColor": "green", "mode": "fixed"}}
+              ]
+            }
+          ]
+        },
+        "gridPos": {"h": 6, "w": 12, "x": 12, "y": 31},
+        "id": 13,
+        "options": {
+          "legend": {
+            "calcs": ["mean", "lastNotNull"],
+            "displayMode": "table",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {"mode": "multi", "sort": "none"}
+        },
+        "pluginVersion": "9.5.0",
+        "targets": [
+          {
+            "datasource": {"type": "prometheus", "uid": "${datasource}"},
+            "expr": "sum(rate(context_engine_requests_total{dimension=\"why\"}[5m]))",
+            "legendFormat": "Requests/sec",
+            "refId": "A"
+          },
+          {
+            "datasource": {"type": "prometheus", "uid": "${datasource}"},
+            "expr": "sum(rate(context_engine_requests_total{dimension=\"why\",status!~\"5..\"}[5m])) / sum(rate(context_engine_requests_total{dimension=\"why\"}[5m]))",
+            "legendFormat": "Success Rate",
+            "refId": "B"
+          }
+        ],
+        "title": "WHY Dimension (Legal Reasoning)",
+        "type": "timeseries"
+      },
+      {
+        "collapsed": false,
+        "gridPos": {"h": 1, "w": 24, "x": 0, "y": 37},
+        "id": 103,
+        "panels": [],
+        "title": "Cache Performance",
+        "type": "row"
+      },
+      {
+        "datasource": {"type": "prometheus", "uid": "${datasource}"},
+        "fieldConfig": {
+          "defaults": {
+            "color": {"mode": "thresholds"},
+            "mappings": [],
+            "max": 1,
+            "min": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {"color": "red", "value": null},
+                {"color": "yellow", "value": 0.3},
+                {"color": "green", "value": 0.7}
+              ]
+            },
+            "unit": "percentunit"
+          },
+          "overrides": []
+        },
+        "gridPos": {"h": 6, "w": 6, "x": 0, "y": 38},
+        "id": 14,
+        "options": {
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": ["lastNotNull"],
+            "fields": "",
+            "values": false
+          },
+          "showThresholdLabels": false,
+          "showThresholdMarkers": true
+        },
+        "pluginVersion": "9.5.0",
+        "targets": [
+          {
+            "datasource": {"type": "prometheus", "uid": "${datasource}"},
+            "expr": "sum(rate(context_engine_cache_hits_total[10m])) / sum(rate(context_engine_cache_requests_total[10m]))",
+            "refId": "A"
+          }
+        ],
+        "title": "Cache Hit Rate %",
+        "type": "gauge"
+      },
+      {
+        "datasource": {"type": "prometheus", "uid": "${datasource}"},
+        "fieldConfig": {
+          "defaults": {
+            "color": {"mode": "palette-classic"},
+            "custom": {
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "drawStyle": "line",
+              "fillOpacity": 10,
+              "gradientMode": "none",
+              "hideFrom": {"tooltip": false, "viz": false, "legend": false},
+              "lineInterpolation": "linear",
+              "lineWidth": 2,
+              "pointSize": 5,
+              "scaleDistribution": {"type": "linear"},
+              "showPoints": "never",
+              "spanNulls": false,
+              "stacking": {"group": "A", "mode": "none"},
+              "thresholdsStyle": {"mode": "off"}
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {"color": "green", "value": null}
+              ]
+            },
+            "unit": "short"
+          },
+          "overrides": []
+        },
+        "gridPos": {"h": 6, "w": 6, "x": 6, "y": 38},
+        "id": 15,
+        "options": {
+          "legend": {
+            "calcs": ["lastNotNull", "max"],
+            "displayMode": "table",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {"mode": "multi", "sort": "none"}
+        },
+        "pluginVersion": "9.5.0",
+        "targets": [
+          {
+            "datasource": {"type": "prometheus", "uid": "${datasource}"},
+            "expr": "context_engine_cache_size_entries",
+            "legendFormat": "Entries",
+            "refId": "A"
+          }
+        ],
+        "title": "Cache Size (Entries)",
+        "type": "timeseries"
+      },
+      {
+        "datasource": {"type": "prometheus", "uid": "${datasource}"},
+        "fieldConfig": {
+          "defaults": {
+            "color": {"mode": "palette-classic"},
+            "custom": {
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "drawStyle": "line",
+              "fillOpacity": 10,
+              "gradientMode": "none",
+              "hideFrom": {"tooltip": false, "viz": false, "legend": false},
+              "lineInterpolation": "linear",
+              "lineWidth": 2,
+              "pointSize": 5,
+              "scaleDistribution": {"type": "linear"},
+              "showPoints": "never",
+              "spanNulls": false,
+              "stacking": {"group": "A", "mode": "none"},
+              "thresholdsStyle": {"mode": "off"}
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {"color": "green", "value": null}
+              ]
+            },
+            "unit": "ops"
+          },
+          "overrides": []
+        },
+        "gridPos": {"h": 6, "w": 6, "x": 12, "y": 38},
+        "id": 16,
+        "options": {
+          "legend": {
+            "calcs": ["mean", "lastNotNull"],
+            "displayMode": "table",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {"mode": "multi", "sort": "none"}
+        },
+        "pluginVersion": "9.5.0",
+        "targets": [
+          {
+            "datasource": {"type": "prometheus", "uid": "${datasource}"},
+            "expr": "rate(context_engine_cache_evictions_total[5m])",
+            "legendFormat": "Evictions/sec",
+            "refId": "A"
+          }
+        ],
+        "title": "Cache Eviction Rate",
+        "type": "timeseries"
+      },
+      {
+        "datasource": {"type": "prometheus", "uid": "${datasource}"},
+        "fieldConfig": {
+          "defaults": {
+            "color": {"mode": "palette-classic"},
+            "custom": {
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "drawStyle": "line",
+              "fillOpacity": 10,
+              "gradientMode": "none",
+              "hideFrom": {"tooltip": false, "viz": false, "legend": false},
+              "lineInterpolation": "linear",
+              "lineWidth": 2,
+              "pointSize": 5,
+              "scaleDistribution": {"type": "linear"},
+              "showPoints": "never",
+              "spanNulls": false,
+              "stacking": {"group": "A", "mode": "none"},
+              "thresholdsStyle": {"mode": "line"}
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {"color": "green", "value": null},
+                {"color": "red", "value": 2}
+              ]
+            },
+            "unit": "s"
+          },
+          "overrides": []
+        },
+        "gridPos": {"h": 6, "w": 6, "x": 18, "y": 38},
+        "id": 17,
+        "options": {
+          "legend": {
+            "calcs": ["mean", "lastNotNull", "max"],
+            "displayMode": "table",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {"mode": "multi", "sort": "none"}
+        },
+        "pluginVersion": "9.5.0",
+        "targets": [
+          {
+            "datasource": {"type": "prometheus", "uid": "${datasource}"},
+            "expr": "histogram_quantile(0.95, sum(rate(context_engine_cache_miss_latency_seconds_bucket[5m])) by (le))",
+            "legendFormat": "P95 Miss Latency",
+            "refId": "A"
+          }
+        ],
+        "title": "Cache Miss Latency (P95)",
+        "type": "timeseries"
+      },
+      {
+        "collapsed": false,
+        "gridPos": {"h": 1, "w": 24, "x": 0, "y": 44},
+        "id": 104,
+        "panels": [],
+        "title": "Dependencies Health",
+        "type": "row"
+      },
+      {
+        "datasource": {"type": "prometheus", "uid": "${datasource}"},
+        "fieldConfig": {
+          "defaults": {
+            "color": {"mode": "thresholds"},
+            "mappings": [
+              {"options": {"0": {"color": "red", "index": 0, "text": "DOWN"}}, "type": "value"},
+              {"options": {"1": {"color": "green", "index": 1, "text": "UP"}}, "type": "value"}
+            ],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {"color": "red", "value": null},
+                {"color": "green", "value": 1}
+              ]
+            },
+            "unit": "none"
+          },
+          "overrides": []
+        },
+        "gridPos": {"h": 6, "w": 6, "x": 0, "y": 45},
+        "id": 18,
+        "options": {
+          "colorMode": "background",
+          "graphMode": "none",
+          "justifyMode": "center",
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": ["lastNotNull"],
+            "fields": "",
+            "values": false
+          },
+          "textMode": "value_and_name"
+        },
+        "pluginVersion": "9.5.0",
+        "targets": [
+          {
+            "datasource": {"type": "prometheus", "uid": "${datasource}"},
+            "expr": "context_engine_dependency_health{dependency=\"graphrag\"}",
+            "refId": "A"
+          }
+        ],
+        "title": "GraphRAG Service (8010)",
+        "type": "stat"
+      },
+      {
+        "datasource": {"type": "prometheus", "uid": "${datasource}"},
+        "fieldConfig": {
+          "defaults": {
+            "color": {"mode": "thresholds"},
+            "mappings": [
+              {"options": {"0": {"color": "red", "index": 0, "text": "DOWN"}}, "type": "value"},
+              {"options": {"1": {"color": "green", "index": 1, "text": "UP"}}, "type": "value"}
+            ],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {"color": "red", "value": null},
+                {"color": "green", "value": 1}
+              ]
+            },
+            "unit": "none"
+          },
+          "overrides": []
+        },
+        "gridPos": {"h": 6, "w": 6, "x": 6, "y": 45},
+        "id": 19,
+        "options": {
+          "colorMode": "background",
+          "graphMode": "none",
+          "justifyMode": "center",
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": ["lastNotNull"],
+            "fields": "",
+            "values": false
+          },
+          "textMode": "value_and_name"
+        },
+        "pluginVersion": "9.5.0",
+        "targets": [
+          {
+            "datasource": {"type": "prometheus", "uid": "${datasource}"},
+            "expr": "context_engine_dependency_health{dependency=\"prompt-service\"}",
+            "refId": "A"
+          }
+        ],
+        "title": "Prompt Service (8003)",
+        "type": "stat"
+      },
+      {
+        "datasource": {"type": "prometheus", "uid": "${datasource}"},
+        "fieldConfig": {
+          "defaults": {
+            "color": {"mode": "thresholds"},
+            "mappings": [
+              {"options": {"0": {"color": "red", "index": 0, "text": "DOWN"}}, "type": "value"},
+              {"options": {"1": {"color": "green", "index": 1, "text": "UP"}}, "type": "value"}
+            ],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {"color": "red", "value": null},
+                {"color": "green", "value": 1}
+              ]
+            },
+            "unit": "none"
+          },
+          "overrides": []
+        },
+        "gridPos": {"h": 6, "w": 6, "x": 12, "y": 45},
+        "id": 20,
+        "options": {
+          "colorMode": "background",
+          "graphMode": "none",
+          "justifyMode": "center",
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": ["lastNotNull"],
+            "fields": "",
+            "values": false
+          },
+          "textMode": "value_and_name"
+        },
+        "pluginVersion": "9.5.0",
+        "targets": [
+          {
+            "datasource": {"type": "prometheus", "uid": "${datasource}"},
+            "expr": "context_engine_dependency_health{dependency=\"supabase\"}",
+            "refId": "A"
+          }
+        ],
+        "title": "Supabase Database (8002)",
+        "type": "stat"
+      },
+      {
+        "datasource": {"type": "prometheus", "uid": "${datasource}"},
+        "fieldConfig": {
+          "defaults": {
+            "color": {"mode": "palette-classic"},
+            "custom": {
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "drawStyle": "line",
+              "fillOpacity": 10,
+              "gradientMode": "none",
+              "hideFrom": {"tooltip": false, "viz": false, "legend": false},
+              "lineInterpolation": "linear",
+              "lineWidth": 2,
+              "pointSize": 5,
+              "scaleDistribution": {"type": "linear"},
+              "showPoints": "never",
+              "spanNulls": false,
+              "stacking": {"group": "A", "mode": "none"},
+              "thresholdsStyle": {"mode": "off"}
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {"color": "green", "value": null}
+              ]
+            },
+            "unit": "ops"
+          },
+          "overrides": []
+        },
+        "gridPos": {"h": 6, "w": 6, "x": 18, "y": 45},
+        "id": 21,
+        "options": {
+          "legend": {
+            "calcs": ["mean", "lastNotNull"],
+            "displayMode": "table",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {"mode": "multi", "sort": "desc"}
+        },
+        "pluginVersion": "9.5.0",
+        "targets": [
+          {
+            "datasource": {"type": "prometheus", "uid": "${datasource}"},
+            "expr": "sum by (dependency) (rate(context_engine_dependency_errors_total[5m]))",
+            "legendFormat": "{{dependency}}",
+            "refId": "A"
+          }
+        ],
+        "title": "Dependency Error Rates",
+        "type": "timeseries"
+      },
+      {
+        "collapsed": false,
+        "gridPos": {"h": 1, "w": 24, "x": 0, "y": 51},
+        "id": 105,
+        "panels": [],
+        "title": "Resource Utilization",
+        "type": "row"
+      },
+      {
+        "datasource": {"type": "prometheus", "uid": "${datasource}"},
+        "fieldConfig": {
+          "defaults": {
+            "color": {"mode": "thresholds"},
+            "mappings": [],
+            "max": 2,
+            "min": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {"color": "green", "value": null},
+                {"color": "yellow", "value": 1.2},
+                {"color": "orange", "value": 1.6},
+                {"color": "red", "value": 1.8}
+              ]
+            },
+            "unit": "percentunit"
+          },
+          "overrides": []
+        },
+        "gridPos": {"h": 6, "w": 6, "x": 0, "y": 52},
+        "id": 22,
+        "options": {
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": ["lastNotNull"],
+            "fields": "",
+            "values": false
+          },
+          "showThresholdLabels": false,
+          "showThresholdMarkers": true
+        },
+        "pluginVersion": "9.5.0",
+        "targets": [
+          {
+            "datasource": {"type": "prometheus", "uid": "${datasource}"},
+            "expr": "rate(process_cpu_seconds_total{job=\"context-engine\"}[5m])",
+            "refId": "A"
+          }
+        ],
+        "title": "CPU Usage %",
+        "type": "gauge"
+      },
+      {
+        "datasource": {"type": "prometheus", "uid": "${datasource}"},
+        "fieldConfig": {
+          "defaults": {
+            "color": {"mode": "thresholds"},
+            "mappings": [],
+            "max": 2147483648,
+            "min": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {"color": "green", "value": null},
+                {"color": "yellow", "value": 1342177280},
+                {"color": "orange", "value": 1610612736},
+                {"color": "red", "value": 1932735283}
+              ]
+            },
+            "unit": "decbytes"
+          },
+          "overrides": []
+        },
+        "gridPos": {"h": 6, "w": 6, "x": 6, "y": 52},
+        "id": 23,
+        "options": {
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": ["lastNotNull"],
+            "fields": "",
+            "values": false
+          },
+          "showThresholdLabels": false,
+          "showThresholdMarkers": true
+        },
+        "pluginVersion": "9.5.0",
+        "targets": [
+          {
+            "datasource": {"type": "prometheus", "uid": "${datasource}"},
+            "expr": "process_resident_memory_bytes{job=\"context-engine\"}",
+            "refId": "A"
+          }
+        ],
+        "title": "Memory Usage (2GB Limit)",
+        "type": "gauge"
+      },
+      {
+        "datasource": {"type": "prometheus", "uid": "${datasource}"},
+        "fieldConfig": {
+          "defaults": {
+            "color": {"mode": "palette-classic"},
+            "custom": {
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "drawStyle": "line",
+              "fillOpacity": 10,
+              "gradientMode": "none",
+              "hideFrom": {"tooltip": false, "viz": false, "legend": false},
+              "lineInterpolation": "linear",
+              "lineWidth": 2,
+              "pointSize": 5,
+              "scaleDistribution": {"type": "linear"},
+              "showPoints": "never",
+              "spanNulls": false,
+              "stacking": {"group": "A", "mode": "none"},
+              "thresholdsStyle": {"mode": "off"}
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {"color": "green", "value": null}
+              ]
+            },
+            "unit": "Bps"
+          },
+          "overrides": []
+        },
+        "gridPos": {"h": 6, "w": 6, "x": 12, "y": 52},
+        "id": 24,
+        "options": {
+          "legend": {
+            "calcs": ["mean", "lastNotNull"],
+            "displayMode": "table",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {"mode": "multi", "sort": "none"}
+        },
+        "pluginVersion": "9.5.0",
+        "targets": [
+          {
+            "datasource": {"type": "prometheus", "uid": "${datasource}"},
+            "expr": "rate(process_network_transmit_bytes_total{job=\"context-engine\"}[5m])",
+            "legendFormat": "Transmit",
+            "refId": "A"
+          },
+          {
+            "datasource": {"type": "prometheus", "uid": "${datasource}"},
+            "expr": "rate(process_network_receive_bytes_total{job=\"context-engine\"}[5m])",
+            "legendFormat": "Receive",
+            "refId": "B"
+          }
+        ],
+        "title": "Network I/O",
+        "type": "timeseries"
+      },
+      {
+        "datasource": {"type": "prometheus", "uid": "${datasource}"},
+        "fieldConfig": {
+          "defaults": {
+            "color": {"mode": "palette-classic"},
+            "custom": {
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "drawStyle": "line",
+              "fillOpacity": 10,
+              "gradientMode": "none",
+              "hideFrom": {"tooltip": false, "viz": false, "legend": false},
+              "lineInterpolation": "linear",
+              "lineWidth": 2,
+              "pointSize": 5,
+              "scaleDistribution": {"type": "linear"},
+              "showPoints": "never",
+              "spanNulls": false,
+              "stacking": {"group": "A", "mode": "none"},
+              "thresholdsStyle": {"mode": "off"}
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {"color": "green", "value": null}
+              ]
+            },
+            "unit": "iops"
+          },
+          "overrides": []
+        },
+        "gridPos": {"h": 6, "w": 6, "x": 18, "y": 52},
+        "id": 25,
+        "options": {
+          "legend": {
+            "calcs": ["mean", "lastNotNull"],
+            "displayMode": "table",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {"mode": "multi", "sort": "none"}
+        },
+        "pluginVersion": "9.5.0",
+        "targets": [
+          {
+            "datasource": {"type": "prometheus", "uid": "${datasource}"},
+            "expr": "rate(process_disk_read_bytes_total{job=\"context-engine\"}[5m])",
+            "legendFormat": "Read",
+            "refId": "A"
+          },
+          {
+            "datasource": {"type": "prometheus", "uid": "${datasource}"},
+            "expr": "rate(process_disk_write_bytes_total{job=\"context-engine\"}[5m])",
+            "legendFormat": "Write",
+            "refId": "B"
+          }
+        ],
+        "title": "Disk I/O",
+        "type": "timeseries"
+      },
+      {
+        "collapsed": false,
+        "gridPos": {"h": 1, "w": 24, "x": 0, "y": 58},
+        "id": 106,
+        "panels": [],
+        "title": "Test Quality Metrics",
+        "type": "row"
+      },
+      {
+        "datasource": {"type": "prometheus", "uid": "${datasource}"},
+        "fieldConfig": {
+          "defaults": {
+            "color": {"mode": "thresholds"},
+            "mappings": [],
+            "max": 1,
+            "min": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {"color": "red", "value": null},
+                {"color": "yellow", "value": 0.7},
+                {"color": "green", "value": 0.9}
+              ]
+            },
+            "unit": "percentunit"
+          },
+          "overrides": []
+        },
+        "gridPos": {"h": 6, "w": 6, "x": 0, "y": 59},
+        "id": 26,
+        "options": {
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": ["lastNotNull"],
+            "fields": "",
+            "values": false
+          },
+          "showThresholdLabels": false,
+          "showThresholdMarkers": true
+        },
+        "pluginVersion": "9.5.0",
+        "targets": [
+          {
+            "datasource": {"type": "prometheus", "uid": "${datasource}"},
+            "expr": "context_engine_test_pass_rate",
+            "refId": "A"
+          }
+        ],
+        "title": "Test Pass Rate %",
+        "type": "gauge"
+      },
+      {
+        "datasource": {"type": "prometheus", "uid": "${datasource}"},
+        "fieldConfig": {
+          "defaults": {
+            "color": {"mode": "palette-classic"},
+            "custom": {
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "drawStyle": "line",
+              "fillOpacity": 10,
+              "gradientMode": "none",
+              "hideFrom": {"tooltip": false, "viz": false, "legend": false},
+              "lineInterpolation": "linear",
+              "lineWidth": 2,
+              "pointSize": 5,
+              "scaleDistribution": {"type": "linear"},
+              "showPoints": "auto",
+              "spanNulls": false,
+              "stacking": {"group": "A", "mode": "none"},
+              "thresholdsStyle": {"mode": "line"}
+            },
+            "mappings": [],
+            "max": 1,
+            "min": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {"color": "green", "value": null},
+                {"color": "yellow", "value": 0.6},
+                {"color": "red", "value": 0.8}
+              ]
+            },
+            "unit": "percentunit"
+          },
+          "overrides": []
+        },
+        "gridPos": {"h": 6, "w": 6, "x": 6, "y": 59},
+        "id": 27,
+        "options": {
+          "legend": {
+            "calcs": ["lastNotNull"],
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {"mode": "single", "sort": "none"}
+        },
+        "pluginVersion": "9.5.0",
+        "targets": [
+          {
+            "datasource": {"type": "prometheus", "uid": "${datasource}"},
+            "expr": "context_engine_test_coverage",
+            "legendFormat": "Coverage %",
+            "refId": "A"
+          }
+        ],
+        "title": "Test Coverage % Over Time",
+        "type": "timeseries"
+      },
+      {
+        "datasource": {"type": "prometheus", "uid": "${datasource}"},
+        "fieldConfig": {
+          "defaults": {
+            "color": {"mode": "palette-classic"},
+            "custom": {
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "drawStyle": "bars",
+              "fillOpacity": 80,
+              "gradientMode": "none",
+              "hideFrom": {"tooltip": false, "viz": false, "legend": false},
+              "lineInterpolation": "linear",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {"type": "linear"},
+              "showPoints": "never",
+              "spanNulls": false,
+              "stacking": {"group": "A", "mode": "none"},
+              "thresholdsStyle": {"mode": "off"}
+            },
+            "mappings": [],
+            "max": 1,
+            "min": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {"color": "green", "value": null}
+              ]
+            },
+            "unit": "percentunit"
+          },
+          "overrides": []
+        },
+        "gridPos": {"h": 6, "w": 6, "x": 12, "y": 59},
+        "id": 28,
+        "options": {
+          "legend": {
+            "calcs": ["lastNotNull"],
+            "displayMode": "table",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {"mode": "multi", "sort": "desc"}
+        },
+        "pluginVersion": "9.5.0",
+        "targets": [
+          {
+            "datasource": {"type": "prometheus", "uid": "${datasource}"},
+            "expr": "context_engine_dimension_test_quality{dimension=\"who\"}",
+            "legendFormat": "WHO",
+            "refId": "A"
+          },
+          {
+            "datasource": {"type": "prometheus", "uid": "${datasource}"},
+            "expr": "context_engine_dimension_test_quality{dimension=\"what\"}",
+            "legendFormat": "WHAT",
+            "refId": "B"
+          },
+          {
+            "datasource": {"type": "prometheus", "uid": "${datasource}"},
+            "expr": "context_engine_dimension_test_quality{dimension=\"where\"}",
+            "legendFormat": "WHERE",
+            "refId": "C"
+          },
+          {
+            "datasource": {"type": "prometheus", "uid": "${datasource}"},
+            "expr": "context_engine_dimension_test_quality{dimension=\"when\"}",
+            "legendFormat": "WHEN",
+            "refId": "D"
+          },
+          {
+            "datasource": {"type": "prometheus", "uid": "${datasource}"},
+            "expr": "context_engine_dimension_test_quality{dimension=\"why\"}",
+            "legendFormat": "WHY",
+            "refId": "E"
+          }
+        ],
+        "title": "Dimension Test Quality Scores",
+        "type": "timeseries"
+      },
+      {
+        "datasource": {"type": "prometheus", "uid": "${datasource}"},
+        "fieldConfig": {
+          "defaults": {
+            "color": {"mode": "palette-classic"},
+            "custom": {
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "drawStyle": "line",
+              "fillOpacity": 10,
+              "gradientMode": "none",
+              "hideFrom": {"tooltip": false, "viz": false, "legend": false},
+              "lineInterpolation": "linear",
+              "lineWidth": 2,
+              "pointSize": 5,
+              "scaleDistribution": {"type": "linear"},
+              "showPoints": "never",
+              "spanNulls": false,
+              "stacking": {"group": "A", "mode": "none"},
+              "thresholdsStyle": {"mode": "off"}
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {"color": "green", "value": null}
+              ]
+            },
+            "unit": "s"
+          },
+          "overrides": []
+        },
+        "gridPos": {"h": 6, "w": 6, "x": 18, "y": 59},
+        "id": 29,
+        "options": {
+          "legend": {
+            "calcs": ["mean", "lastNotNull", "max"],
+            "displayMode": "table",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {"mode": "multi", "sort": "none"}
+        },
+        "pluginVersion": "9.5.0",
+        "targets": [
+          {
+            "datasource": {"type": "prometheus", "uid": "${datasource}"},
+            "expr": "context_engine_test_execution_time_seconds",
+            "legendFormat": "Execution Time",
+            "refId": "A"
+          }
+        ],
+        "title": "Test Execution Time",
+        "type": "timeseries"
+      }
+    ],
+    "refresh": "30s",
+    "schemaVersion": 38,
+    "style": "dark",
+    "tags": ["luris", "context-engine", "microservices", "production", "monitoring"],
+    "templating": {
+      "list": [
+        {
+          "current": {
+            "selected": false,
+            "text": "Prometheus",
+            "value": "Prometheus"
+          },
+          "hide": 0,
+          "includeAll": false,
+          "label": "Data Source",
+          "multi": false,
+          "name": "datasource",
+          "options": [],
+          "query": "prometheus",
+          "refresh": 1,
+          "regex": "",
+          "skipUrlSync": false,
+          "type": "datasource"
+        },
+        {
+          "current": {
+            "selected": false,
+            "text": "production",
+            "value": "production"
+          },
+          "hide": 0,
+          "includeAll": false,
+          "label": "Environment",
+          "multi": false,
+          "name": "environment",
+          "options": [
+            {"selected": true, "text": "production", "value": "production"},
+            {"selected": false, "text": "staging", "value": "staging"},
+            {"selected": false, "text": "development", "value": "development"}
+          ],
+          "query": "production,staging,development",
+          "queryValue": "",
+          "skipUrlSync": false,
+          "type": "custom"
+        },
+        {
+          "current": {
+            "selected": false,
+            "text": "context-engine",
+            "value": "context-engine"
+          },
+          "hide": 2,
+          "includeAll": false,
+          "label": "Service",
+          "multi": false,
+          "name": "service",
+          "options": [
+            {"selected": true, "text": "context-engine", "value": "context-engine"}
+          ],
+          "query": "context-engine",
+          "queryValue": "",
+          "skipUrlSync": false,
+          "type": "custom"
+        }
+      ]
+    },
+    "time": {
+      "from": "now-6h",
+      "to": "now"
+    },
+    "timepicker": {
+      "refresh_intervals": ["10s", "30s", "1m", "5m", "15m", "30m", "1h", "2h", "1d"],
+      "time_options": ["5m", "15m", "1h", "6h", "12h", "24h", "2d", "7d", "30d"]
+    },
+    "timezone": "browser",
+    "title": "Context Engine Service - Production Monitoring",
+    "uid": "context-engine-prod",
+    "version": 1,
+    "weekStart": ""
+  },
+  "overwrite": true
+}

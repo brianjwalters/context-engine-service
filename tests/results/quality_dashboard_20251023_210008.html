@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Context Engine - Test Quality Dashboard</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            border-bottom: 3px solid #007bff;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #555;
+            margin-top: 30px;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 8px;
+        }
+        .score {
+            font-size: 64px;
+            font-weight: bold;
+            text-align: center;
+            margin: 30px 0;
+        }
+        .grade-A { color: #28a745; }
+        .grade-B { color: #17a2b8; }
+        .grade-C { color: #ffc107; }
+        .grade-D { color: #fd7e14; }
+        .grade-F { color: #dc3545; }
+        .meta {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 20px 0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+            font-weight: 600;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tr:hover {
+            background-color: #f0f8ff;
+        }
+        .status-excellent { color: #28a745; font-weight: bold; }
+        .status-good { color: #17a2b8; font-weight: bold; }
+        .status-acceptable { color: #ffc107; font-weight: bold; }
+        .status-needs_improvement { color: #fd7e14; font-weight: bold; }
+        .status-critical { color: #dc3545; font-weight: bold; }
+        .recommendation {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 10px 0;
+        }
+        .dimension-card {
+            background-color: #f8f9fa;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 15px 0;
+            border-left: 4px solid #007bff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Context Engine Service - Test Quality Dashboard</h1>
+        <div class="meta">
+            <p><strong>Generated:</strong> 2025-10-23 21:00:08 UTC</p>
+            <p><strong>Report Version:</strong> 1.0.0</p>
+        </div>
+
+        <div class="score grade-D">
+            Overall Score: 66.04/100 (Grade: D)
+        </div>
+        <p style="text-align: center; font-size: 18px; color: #666;">
+            <strong>Assessment:</strong> Needs Improvement - Below recommended quality standards
+        </p>
+
+        <h2>Test Execution Summary</h2>
+        <table>
+            <tr>
+                <th>Metric</th>
+                <th>Value</th>
+                <th>Status</th>
+            </tr>
+            <tr>
+                <td>Total Tests</td>
+                <td>105</td>
+                <td>✅</td>
+            </tr>
+            <tr>
+                <td>Tests Passed</td>
+                <td>80</td>
+                <td>✅ 76.2% pass rate</td>
+            </tr>
+            <tr>
+                <td>Tests Failed</td>
+                <td>0</td>
+                <td>✅</td>
+            </tr>
+            <tr>
+                <td>Tests Skipped</td>
+                <td>25</td>
+                <td>ℹ️</td>
+            </tr>
+            <tr>
+                <td>Code Coverage</td>
+                <td>58.95%</td>
+                <td>✅</td>
+            </tr>
+        </table>
+
+        <h2>Quality Score Breakdown</h2>
+        <table>
+            <tr>
+                <th>Component</th>
+                <th>Score</th>
+                <th>Max</th>
+                <th>Percentage</th>
+            </tr>
+            <tr>
+                <td><strong>Coverage Quality</strong></td>
+                <td>23.58</td>
+                <td>40</td>
+                <td>58.9%</td>
+            </tr>
+            <tr>
+                <td><strong>Test Pass Rate</strong></td>
+                <td>22.86</td>
+                <td>30</td>
+                <td>76.2%</td>
+            </tr>
+            <tr>
+                <td><strong>Dimension Quality</strong></td>
+                <td>19.60</td>
+                <td>20</td>
+                <td>98.0%</td>
+            </tr>
+            <tr>
+                <td><strong>Integration Health</strong></td>
+                <td>0.00</td>
+                <td>10</td>
+                <td>0.0%</td>
+            </tr>
+            <tr style="background-color: #e3f2fd;">
+                <td><strong>OVERALL</strong></td>
+                <td><strong>66.04</strong></td>
+                <td><strong>100</strong></td>
+                <td><strong>66.0%</strong></td>
+            </tr>
+        </table>
+
+        <h2>Coverage by Module</h2>
+        <table>
+            <tr>
+                <th>Module</th>
+                <th>Coverage</th>
+                <th>Status</th>
+                <th>Statements</th>
+                <th>Missing</th>
+            </tr>
+            <tr>
+                <td>src/clients/supabase_client.py</td>
+                <td>37.8%</td>
+                <td class="status-critical">Critical</td>
+                <td>887</td>
+                <td>552</td>
+            </tr>
+            <tr>
+                <td>src/api/routes/context.py</td>
+                <td>49.2%</td>
+                <td class="status-needs_improvement">Needs Improvement</td>
+                <td>122</td>
+                <td>62</td>
+            </tr>
+            <tr>
+                <td>src/clients/graphrag_client.py</td>
+                <td>63.6%</td>
+                <td class="status-acceptable">Acceptable</td>
+                <td>231</td>
+                <td>84</td>
+            </tr>
+            <tr>
+                <td>src/core/dimension_analyzer.py</td>
+                <td>69.5%</td>
+                <td class="status-acceptable">Acceptable</td>
+                <td>315</td>
+                <td>96</td>
+            </tr>
+            <tr>
+                <td>src/api/routes/cache.py</td>
+                <td>71.3%</td>
+                <td class="status-acceptable">Acceptable</td>
+                <td>108</td>
+                <td>31</td>
+            </tr>
+            <tr>
+                <td>src/core/cache_manager.py</td>
+                <td>71.6%</td>
+                <td class="status-acceptable">Acceptable</td>
+                <td>194</td>
+                <td>55</td>
+            </tr>
+            <tr>
+                <td>src/core/context_builder.py</td>
+                <td>84.0%</td>
+                <td class="status-good">Good</td>
+                <td>175</td>
+                <td>28</td>
+            </tr>
+            <tr>
+                <td>src/models/dimensions.py</td>
+                <td>88.9%</td>
+                <td class="status-good">Good</td>
+                <td>207</td>
+                <td>23</td>
+            </tr>
+            <tr>
+                <td>src/api/main.py</td>
+                <td>100.0%</td>
+                <td class="status-excellent">Excellent</td>
+                <td>29</td>
+                <td>0</td>
+            </tr>
+        </table>
+
+        <h2>Dimension Quality</h2>
+        <div class="dimension-card">
+            <h3>WHO Dimension</h3>
+            <p><strong>Analyzer Tests:</strong> 15/15 passed (100%)</p>
+            <p><strong>Sample Categories:</strong> courts, parties, judges, attorneys</p>
+            <p><strong>Quality Score:</strong> 1.00/1.0 ✅</p>
+        </div>
+        <div class="dimension-card">
+            <h3>WHAT Dimension</h3>
+            <p><strong>Analyzer Tests:</strong> 10/10 passed (100%)</p>
+            <p><strong>Sample Categories:</strong> statutes, case_citations, legal_issues, causes_of_action</p>
+            <p><strong>Quality Score:</strong> 1.00/1.0 ✅</p>
+        </div>
+        <div class="dimension-card">
+            <h3>WHERE Dimension</h3>
+            <p><strong>Analyzer Tests:</strong> 10/10 passed (100%)</p>
+            <p><strong>Sample Categories:</strong> jurisdictions, venues, courts</p>
+            <p><strong>Quality Score:</strong> 0.95/1.0 ✅</p>
+        </div>
+        <div class="dimension-card">
+            <h3>WHEN Dimension</h3>
+            <p><strong>Analyzer Tests:</strong> 10/10 passed (100%)</p>
+            <p><strong>Sample Categories:</strong> dates, deadlines, timeline_events</p>
+            <p><strong>Quality Score:</strong> 0.95/1.0 ✅</p>
+        </div>
+        <div class="dimension-card">
+            <h3>WHY Dimension</h3>
+            <p><strong>Analyzer Tests:</strong> 10/10 passed (100%)</p>
+            <p><strong>Sample Categories:</strong> precedents, legal_theories, arguments, reasoning</p>
+            <p><strong>Quality Score:</strong> 1.00/1.0 ✅</p>
+        </div>
+
+        <h2>Recommendations</h2>
+        <div class="recommendation">
+            Increase coverage for src/clients/supabase_client.py from 37.8% to 65% (+27.2%)
+        </div>
+        <div class="recommendation">
+            Increase coverage for src/api/routes/context.py from 49.2% to 65% (+15.8%)
+        </div>
+        <div class="recommendation">
+            Priority: Increase overall code coverage to at least 75%
+        </div>
+        <div class="recommendation">
+            Migrate Pydantic validators to V2 (@field_validator instead of @validator)
+        </div>
+    </div>
+</body>
+</html>

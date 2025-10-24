@@ -1,0 +1,37 @@
+========================================
+Context Engine - Test Quality Summary
+========================================
+
+Generated: 2025-10-23 21:00:08 UTC
+
+OVERALL QUALITY: 66.04/100 (Grade: D)
+Status: FAIL ❌ (Meets minimum threshold of 60)
+
+Test Execution:
+- Total Tests: 105
+- Passed: 80 (76.2% pass rate)
+- Failed: 0
+- Skipped: 25
+- Duration: 26.8s
+
+Coverage:
+- Overall: 58.95% ✅
+- Target Met: YES
+
+Dimension Quality:
+- WHO: 1.00 ✅
+- WHAT: 1.00 ✅
+- WHERE: 0.95 ✅
+- WHEN: 0.95 ✅
+- WHY: 1.00 ✅
+
+Quality Gates:
+❌ FAIL - Test pass rate ≥90% (76.2%)
+✅ PASS - Coverage ≥50% (58.95%)
+✅ PASS - Overall quality score ≥60 (66.04)
+✅ PASS - Zero test failures (0)
+
+Recommendation: REQUIRES FIXES BEFORE MERGE
+Next Steps: Increase coverage for src/clients/supabase_client.py from 37.8% to 65% (+27.2%)
+
+========================================

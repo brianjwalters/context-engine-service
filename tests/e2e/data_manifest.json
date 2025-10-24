@@ -1,0 +1,654 @@
+{
+  "generated_at": "2025-10-23T17:54:37.319267+00:00",
+  "database_summary": {
+    "graph_nodes": 119838,
+    "graph_edges": 119340,
+    "law_entities": 59919,
+    "law_documents": 15101
+  },
+  "entity_types_discovered": {
+    "court": 1509,
+    "agreement": 138,
+    "person": 1912,
+    "brief": 120,
+    "statute": 1298,
+    "regulation": 613,
+    "attorney": 1024,
+    "procedure": 280,
+    "plaintiff": 688,
+    "organization": 1272,
+    "jurisdiction": 250,
+    "defendant": 636,
+    "judge": 982,
+    "citation": 124,
+    "witness": 144,
+    "expert": 106,
+    "legal_standard": 392,
+    "date": 120,
+    "law_firm": 127,
+    "case_citation": 1519,
+    "evidence": 129,
+    "motion": 147,
+    "appeal": 137,
+    "contract_term": 117,
+    "judgment": 152,
+    "monetary_amount": 141,
+    "court_rule": 123,
+    "legal_concept": 122,
+    "order": 145,
+    "docket_number": 137,
+    "settlement": 125,
+    "government_agency": 134,
+    "contract": 137
+  },
+  "relationship_types_discovered": {
+    "cites": 1032,
+    "represents": 382,
+    "part_of": 472,
+    "related_to": 626,
+    "supports": 248,
+    "references": 846,
+    "distinguishes": 206,
+    "contracted_with": 42,
+    "opposes": 266,
+    "overruled_by": 42,
+    "follows": 212,
+    "expert_against": 52,
+    "affiliated_with": 54,
+    "employed_by": 46,
+    "represented_by": 46,
+    "employs": 46,
+    "argues_for": 46,
+    "witness_against": 56,
+    "expert_for": 48,
+    "cited_by": 42,
+    "contains": 50,
+    "witness_for": 46,
+    "referenced_by": 24,
+    "overrules": 34,
+    "argues_against": 36
+  },
+  "sample_entities": [
+    {
+      "text": "Court of Appeals",
+      "type": "court",
+      "node_id": "b0f1861e-0e94-4b44-ac51-6a4f771c7ee9"
+    },
+    {
+      "text": "Agreement 183",
+      "type": "agreement",
+      "node_id": "0a505cd4-46d9-4d3a-9d11-ea5bc3867833"
+    },
+    {
+      "text": "John Smith",
+      "type": "person",
+      "node_id": "96cb14a0-0b13-461a-b705-bafdbd74653f"
+    },
+    {
+      "text": "Brief 345",
+      "type": "brief",
+      "node_id": "abe82b90-792f-4a81-ba2f-0947049821c0"
+    },
+    {
+      "text": "Cal. Civ. Code \u00a7 1542",
+      "type": "statute",
+      "node_id": "10274eba-fa8a-48dd-8b21-7b17e9dbdcab"
+    },
+    {
+      "text": "16 C.F.R. \u00a7 433.1",
+      "type": "regulation",
+      "node_id": "ce8a9b53-9aaa-493e-bc1e-cbad37e267cd"
+    },
+    {
+      "text": "Attorney Robert Garcia",
+      "type": "attorney",
+      "node_id": "2aa34d9c-7bd8-4788-b041-a953bea4005d"
+    },
+    {
+      "text": "summary judgment",
+      "type": "procedure",
+      "node_id": "25808b88-5068-436c-922d-f5eb3a7142d9"
+    },
+    {
+      "text": "Plaintiff Brown",
+      "type": "plaintiff",
+      "node_id": "b3a44fbc-1a4d-4421-8f1f-70d662ee2659"
+    },
+    {
+      "text": "Global Tech Inc",
+      "type": "organization",
+      "node_id": "935c965b-9f10-4335-ac1d-6b00e8b8877e"
+    },
+    {
+      "text": "personal jurisdiction",
+      "type": "jurisdiction",
+      "node_id": "6db1dbe7-06a9-48e3-9081-fca1a7915b14"
+    },
+    {
+      "text": "Defendant Holdings",
+      "type": "defendant",
+      "node_id": "001031ea-8ed6-4705-ae35-1e57efb9555d"
+    },
+    {
+      "text": "Judge Murphy",
+      "type": "judge",
+      "node_id": "59270683-c6a9-44ab-bf57-05c4639cb48a"
+    },
+    {
+      "text": "Citation 856",
+      "type": "citation",
+      "node_id": "3af09aae-414f-4ba7-a6cb-209275315178"
+    },
+    {
+      "text": "Witness 110",
+      "type": "witness",
+      "node_id": "87adf6b6-5086-4e4b-b134-b34eb490c519"
+    },
+    {
+      "text": "Expert 192",
+      "type": "expert",
+      "node_id": "7825a01a-7e05-4193-8f0c-1cf8201ee342"
+    },
+    {
+      "text": "beyond reasonable doubt",
+      "type": "legal_standard",
+      "node_id": "4c58f051-19d7-4d3d-a8c8-2acdd1ef956d"
+    },
+    {
+      "text": "September 1, 2024",
+      "type": "date",
+      "node_id": "7479c9f5-a38a-426e-84df-9dc05d1700a6"
+    },
+    {
+      "text": "Law_Firm 763",
+      "type": "law_firm",
+      "node_id": "e31ab361-1c44-46cf-9063-531290aebf65"
+    },
+    {
+      "text": "Marbury v. Madison, 5 U.S. 137",
+      "type": "case_citation",
+      "node_id": "c7fb8701-e9dc-46a4-879e-ac44b8206847"
+    },
+    {
+      "text": "Evidence 970",
+      "type": "evidence",
+      "node_id": "87512921-03f1-4400-8bf2-5a07cf1b49cd"
+    },
+    {
+      "text": "Motion 323",
+      "type": "motion",
+      "node_id": "758befee-2075-494f-993e-99788aaa2a3d"
+    },
+    {
+      "text": "Appeal 26",
+      "type": "appeal",
+      "node_id": "5a2bf6ea-e418-4fd9-9ebe-2c6de141feb9"
+    },
+    {
+      "text": "liquidated damages",
+      "type": "contract_term",
+      "node_id": "90a342af-ad25-4024-8c2a-72e5f486ec0e"
+    },
+    {
+      "text": "Judgment 109",
+      "type": "judgment",
+      "node_id": "2d6fa8c5-c00d-4c61-90f2-87c977a66f51"
+    },
+    {
+      "text": "$100,000",
+      "type": "monetary_amount",
+      "node_id": "f3a5c7b2-6c71-449c-bd58-53d6c0e0ce4e"
+    },
+    {
+      "text": "Court_Rule 995",
+      "type": "court_rule",
+      "node_id": "8c3a00d2-a6eb-4532-9b49-c7b07eb128ed"
+    },
+    {
+      "text": "Legal_Concept 254",
+      "type": "legal_concept",
+      "node_id": "23cdd556-506f-4fad-ba0d-e36b9ac94766"
+    },
+    {
+      "text": "Order 444",
+      "type": "order",
+      "node_id": "2fa70ea6-a2b6-4ccc-95d4-94f2cb8845ce"
+    },
+    {
+      "text": "Docket_Number 301",
+      "type": "docket_number",
+      "node_id": "f2b1c085-d736-4950-ac47-1c82310c46a4"
+    },
+    {
+      "text": "Settlement 987",
+      "type": "settlement",
+      "node_id": "10cc4535-17d7-4e9d-bd47-6e7e402b93e4"
+    },
+    {
+      "text": "Government_Agency 168",
+      "type": "government_agency",
+      "node_id": "238e3826-4a88-4c63-b44d-e6fca3bccefb"
+    },
+    {
+      "text": "Contract 73",
+      "type": "contract",
+      "node_id": "9feea4d3-2400-48f6-a542-da5b9f98a537"
+    }
+  ],
+  "recommended_test_queries": [
+    {
+      "query": "What organizations are mentioned in the documents?",
+      "expected_entity_type": "organization",
+      "dimension": "WHO",
+      "estimated_results": 1272,
+      "reasoning": "organization entities represent WHO dimension - key actors in legal documents"
+    },
+    {
+      "query": "Find all regulations in the legal corpus",
+      "expected_entity_type": "regulation",
+      "dimension": "WHAT",
+      "estimated_results": 613,
+      "reasoning": "regulation entities represent WHAT legal issues/authorities are involved"
+    },
+    {
+      "query": "What court rules appear in the documents?",
+      "expected_entity_type": "court_rule",
+      "dimension": "WHERE",
+      "estimated_results": 123,
+      "reasoning": "court_rule entities represent WHERE geographically/jurisdictionally"
+    },
+    {
+      "query": "What entities have 'cites' relationships?",
+      "expected_relationship": "cites",
+      "dimension": "WHY",
+      "estimated_results": 1032,
+      "reasoning": "'cites' relationships explain WHY entities are connected"
+    },
+    {
+      "query": "Find documents containing both court and agreement entities",
+      "expected_entity_types": [
+        "court",
+        "agreement"
+      ],
+      "dimension": "COMPREHENSIVE",
+      "estimated_results": 138,
+      "reasoning": "Multi-entity query tests cross-dimensional context retrieval"
+    },
+    {
+      "query": "What is the context around 'Marbury v. Madison, 5 U.S. 137'?",
+      "expected_entity_text": "Marbury v. Madison, 5 U.S. 137",
+      "dimension": "COMPREHENSIVE",
+      "estimated_results": 132,
+      "reasoning": "Most common entity (appears 132 times), good for testing retrieval"
+    }
+  ],
+  "sample_document_ids": [
+    "362d3a61-7796-4228-84f9-d085f00aa4a2",
+    "9ce237b8-accc-483e-99d7-37238ae40aca",
+    "6fb5dde8-c7ba-4d6f-b339-0caf5764714c",
+    "8b44b940-7672-40b3-9e28-01168339dac9",
+    "9d096c7c-af78-4dd9-936b-ec4c3c8fb1e1",
+    "8c3db5dc-f401-49fc-ab1b-6469618e111e",
+    "626203bb-7d35-4b46-bc35-c47b301f60f5",
+    "635f3e9b-03d1-46ff-a0a1-43ee55ab4170",
+    "8817fd84-b52b-4c8e-97e7-c94f3f278ed0",
+    "6689b66f-7476-4141-92e6-c9ac8ff128fd"
+  ],
+  "test_data_coverage": {
+    "who_dimension": [
+      "organization",
+      "court_rule",
+      "government_agency",
+      "judge",
+      "attorney",
+      "court",
+      "plaintiff",
+      "defendant",
+      "person"
+    ],
+    "what_dimension": [
+      "regulation",
+      "motion",
+      "statute",
+      "court_rule",
+      "case_citation",
+      "law_firm"
+    ],
+    "where_dimension": [
+      "court_rule",
+      "jurisdiction",
+      "court"
+    ],
+    "when_dimension": [
+      "contract_term",
+      "date"
+    ],
+    "why_dimension": [
+      "citation",
+      "case_citation"
+    ]
+  },
+  "common_nodes": [
+    {
+      "title": "Brown v. Board of Education, 347 U.S. 483",
+      "count": 273
+    },
+    {
+      "title": "Marbury v. Madison, 5 U.S. 137",
+      "count": 264
+    },
+    {
+      "title": "Miranda v. Arizona, 384 U.S. 436",
+      "count": 255
+    },
+    {
+      "title": "Roe v. Wade, 410 U.S. 113",
+      "count": 244
+    },
+    {
+      "title": "42 U.S.C. \u00a7 1983",
+      "count": 165
+    },
+    {
+      "title": "18 U.S.C. \u00a7 242",
+      "count": 154
+    },
+    {
+      "title": "15 U.S.C. \u00a7 1",
+      "count": 152
+    },
+    {
+      "title": "Cal. Civ. Code \u00a7 1542",
+      "count": 147
+    },
+    {
+      "title": "Michael Wilson",
+      "count": 140
+    },
+    {
+      "title": "Sarah Taylor",
+      "count": 140
+    },
+    {
+      "title": "28 U.S.C. \u00a7 1331",
+      "count": 139
+    },
+    {
+      "title": "Jane Doe",
+      "count": 136
+    },
+    {
+      "title": "Tax Court",
+      "count": 135
+    },
+    {
+      "title": "Superior Court",
+      "count": 135
+    },
+    {
+      "title": "United States Supreme Court",
+      "count": 134
+    },
+    {
+      "title": "Jennifer Martinez",
+      "count": 133
+    },
+    {
+      "title": "29 U.S.C. \u00a7 201",
+      "count": 129
+    },
+    {
+      "title": "Attorney Sarah Johnson",
+      "count": 127
+    },
+    {
+      "title": "Court of Appeals",
+      "count": 123
+    },
+    {
+      "title": "Mary Williams",
+      "count": 123
+    }
+  ],
+  "sample_relationships": [
+    {
+      "type": "cites",
+      "sample_evidence": "At"
+    },
+    {
+      "type": "represents",
+      "sample_evidence": "Su"
+    },
+    {
+      "type": "part_of",
+      "sample_evidence": "Ca"
+    },
+    {
+      "type": "related_to",
+      "sample_evidence": "Ex"
+    },
+    {
+      "type": "supports",
+      "sample_evidence": "Ex"
+    },
+    {
+      "type": "references",
+      "sample_evidence": "Mi"
+    },
+    {
+      "type": "distinguishes",
+      "sample_evidence": "Go"
+    },
+    {
+      "type": "contracted_with",
+      "sample_evidence": "AB"
+    },
+    {
+      "type": "opposes",
+      "sample_evidence": "Ma"
+    },
+    {
+      "type": "overruled_by",
+      "sample_evidence": "Ro"
+    },
+    {
+      "type": "follows",
+      "sample_evidence": "Go"
+    },
+    {
+      "type": "expert_against",
+      "sample_evidence": "Co"
+    },
+    {
+      "type": "affiliated_with",
+      "sample_evidence": "$5"
+    },
+    {
+      "type": "employed_by",
+      "sample_evidence": "Ex"
+    },
+    {
+      "type": "represented_by",
+      "sample_evidence": "Ca"
+    },
+    {
+      "type": "employs",
+      "sample_evidence": "Pa"
+    },
+    {
+      "type": "argues_for",
+      "sample_evidence": "Br"
+    },
+    {
+      "type": "witness_against",
+      "sample_evidence": "At"
+    },
+    {
+      "type": "expert_for",
+      "sample_evidence": "Ju"
+    },
+    {
+      "type": "cited_by",
+      "sample_evidence": "Ci"
+    },
+    {
+      "type": "contains",
+      "sample_evidence": "Ci"
+    },
+    {
+      "type": "witness_for",
+      "sample_evidence": "29"
+    },
+    {
+      "type": "referenced_by",
+      "sample_evidence": "Mi"
+    },
+    {
+      "type": "overrules",
+      "sample_evidence": "Ju"
+    },
+    {
+      "type": "argues_against",
+      "sample_evidence": "Pl"
+    }
+  ],
+  "common_entities": [
+    {
+      "text": "Marbury v. Madison, 5 U.S. 137",
+      "count": 132
+    },
+    {
+      "text": "Roe v. Wade, 410 U.S. 113",
+      "count": 119
+    },
+    {
+      "text": "Miranda v. Arizona, 384 U.S. 436",
+      "count": 116
+    },
+    {
+      "text": "Brown v. Board of Education, 347 U.S. 483",
+      "count": 116
+    },
+    {
+      "text": "Michael Wilson",
+      "count": 79
+    },
+    {
+      "text": "Cal. Civ. Code \u00a7 1542",
+      "count": 78
+    },
+    {
+      "text": "28 U.S.C. \u00a7 1331",
+      "count": 75
+    },
+    {
+      "text": "Superior Court",
+      "count": 73
+    },
+    {
+      "text": "15 U.S.C. \u00a7 1",
+      "count": 71
+    },
+    {
+      "text": "Bankruptcy Court",
+      "count": 69
+    },
+    {
+      "text": "John Smith",
+      "count": 69
+    },
+    {
+      "text": "Jennifer Martinez",
+      "count": 68
+    },
+    {
+      "text": "Circuit Court",
+      "count": 67
+    },
+    {
+      "text": "42 U.S.C. \u00a7 1983",
+      "count": 67
+    },
+    {
+      "text": "James Brown",
+      "count": 66
+    },
+    {
+      "text": "Tax Court",
+      "count": 66
+    },
+    {
+      "text": "City Transit Authority",
+      "count": 65
+    },
+    {
+      "text": "Attorney David Kim",
+      "count": 65
+    },
+    {
+      "text": "District Court",
+      "count": 64
+    },
+    {
+      "text": "Patricia Davis",
+      "count": 64
+    }
+  ],
+  "sample_documents": [
+    {
+      "id": "362d3a61-7796-4228-84f9-d085f00aa4a2",
+      "title": "Test Document",
+      "type": "opinion"
+    },
+    {
+      "id": "9ce237b8-accc-483e-99d7-37238ae40aca",
+      "title": "Statute Document 6001",
+      "type": "statute"
+    },
+    {
+      "id": "6fb5dde8-c7ba-4d6f-b339-0caf5764714c",
+      "title": "Case Law Document 1",
+      "type": "case_law"
+    },
+    {
+      "id": "8b44b940-7672-40b3-9e28-01168339dac9",
+      "title": "Case Law Document 2",
+      "type": "case_law"
+    },
+    {
+      "id": "9d096c7c-af78-4dd9-936b-ec4c3c8fb1e1",
+      "title": "Case Law Document 3",
+      "type": "case_law"
+    },
+    {
+      "id": "8c3db5dc-f401-49fc-ab1b-6469618e111e",
+      "title": "Statute Document 4",
+      "type": "statute"
+    },
+    {
+      "id": "626203bb-7d35-4b46-bc35-c47b301f60f5",
+      "title": "Case Law Document 5",
+      "type": "case_law"
+    },
+    {
+      "id": "635f3e9b-03d1-46ff-a0a1-43ee55ab4170",
+      "title": "Case Law Document 6",
+      "type": "case_law"
+    },
+    {
+      "id": "8817fd84-b52b-4c8e-97e7-c94f3f278ed0",
+      "title": "Statute Document 7",
+      "type": "statute"
+    },
+    {
+      "id": "6689b66f-7476-4141-92e6-c9ac8ff128fd",
+      "title": "Case Law Document 8",
+      "type": "case_law"
+    }
+  ],
+  "document_types": {
+    "opinion": 1,
+    "statute": 7,
+    "case_law": 12
+  }
+}

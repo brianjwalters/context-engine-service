@@ -1,0 +1,183 @@
+{
+  "report_metadata": {
+    "generated_at": "2025-10-23T21:00:08.478391Z",
+    "report_version": "1.0.0",
+    "service": "context-engine-service"
+  },
+  "coverage_metrics": {
+    "total_statements": 2268,
+    "covered_statements": 1337,
+    "missing_statements": 931,
+    "percent_covered": 58.95,
+    "modules": {
+      "src/api/main.py": {
+        "coverage": 100.0,
+        "statements": 29,
+        "covered": 29,
+        "missing": 0,
+        "status": "excellent"
+      },
+      "src/api/routes/cache.py": {
+        "coverage": 71.29629629629629,
+        "statements": 108,
+        "covered": 77,
+        "missing": 31,
+        "status": "acceptable"
+      },
+      "src/api/routes/context.py": {
+        "coverage": 49.18032786885246,
+        "statements": 122,
+        "covered": 60,
+        "missing": 62,
+        "status": "needs_improvement"
+      },
+      "src/clients/graphrag_client.py": {
+        "coverage": 63.63636363636363,
+        "statements": 231,
+        "covered": 147,
+        "missing": 84,
+        "status": "acceptable"
+      },
+      "src/clients/supabase_client.py": {
+        "coverage": 37.767756482525364,
+        "statements": 887,
+        "covered": 335,
+        "missing": 552,
+        "status": "critical"
+      },
+      "src/core/cache_manager.py": {
+        "coverage": 71.64948453608247,
+        "statements": 194,
+        "covered": 139,
+        "missing": 55,
+        "status": "acceptable"
+      },
+      "src/core/context_builder.py": {
+        "coverage": 84.0,
+        "statements": 175,
+        "covered": 147,
+        "missing": 28,
+        "status": "good"
+      },
+      "src/core/dimension_analyzer.py": {
+        "coverage": 69.52380952380952,
+        "statements": 315,
+        "covered": 219,
+        "missing": 96,
+        "status": "acceptable"
+      },
+      "src/models/dimensions.py": {
+        "coverage": 88.88888888888889,
+        "statements": 207,
+        "covered": 184,
+        "missing": 23,
+        "status": "good"
+      }
+    },
+    "coverage_trend": [
+      {
+        "date": "2025-10-23",
+        "coverage": 57.23
+      },
+      {
+        "date": "2025-10-23",
+        "coverage": 57.23
+      },
+      {
+        "date": "2025-10-23",
+        "coverage": 0.0
+      },
+      {
+        "date": "2025-10-23",
+        "coverage": 58.95
+      }
+    ]
+  },
+  "dimension_quality": [
+    {
+      "dimension": "WHO",
+      "analyzer_tests_passed": 15,
+      "analyzer_tests_total": 15,
+      "sample_categories": [
+        "courts",
+        "parties",
+        "judges",
+        "attorneys"
+      ],
+      "quality_score": 1.0
+    },
+    {
+      "dimension": "WHAT",
+      "analyzer_tests_passed": 10,
+      "analyzer_tests_total": 10,
+      "sample_categories": [
+        "statutes",
+        "case_citations",
+        "legal_issues",
+        "causes_of_action"
+      ],
+      "quality_score": 1.0
+    },
+    {
+      "dimension": "WHERE",
+      "analyzer_tests_passed": 10,
+      "analyzer_tests_total": 10,
+      "sample_categories": [
+        "jurisdictions",
+        "venues",
+        "courts"
+      ],
+      "quality_score": 0.95
+    },
+    {
+      "dimension": "WHEN",
+      "analyzer_tests_passed": 10,
+      "analyzer_tests_total": 10,
+      "sample_categories": [
+        "dates",
+        "deadlines",
+        "timeline_events"
+      ],
+      "quality_score": 0.95
+    },
+    {
+      "dimension": "WHY",
+      "analyzer_tests_passed": 10,
+      "analyzer_tests_total": 10,
+      "sample_categories": [
+        "precedents",
+        "legal_theories",
+        "arguments",
+        "reasoning"
+      ],
+      "quality_score": 1.0
+    }
+  ],
+  "test_execution": {
+    "total_tests": 105,
+    "passed": 80,
+    "failed": 0,
+    "skipped": 25,
+    "pass_rate": 76.19,
+    "execution_time": 26.8
+  },
+  "integration_health": {
+    "service_health_available": false,
+    "overall_health": 0.0
+  },
+  "quality_score": {
+    "coverage_score": 23.58,
+    "test_pass_rate_score": 22.86,
+    "dimension_quality_score": 19.6,
+    "integration_health_score": 0.0,
+    "overall_score": 66.04,
+    "grade": "D",
+    "assessment": "Needs Improvement - Below recommended quality standards"
+  },
+  "recommendations": [
+    "Increase coverage for src/clients/supabase_client.py from 37.8% to 65% (+27.2%)",
+    "Increase coverage for src/api/routes/context.py from 49.2% to 65% (+15.8%)",
+    "Priority: Increase overall code coverage to at least 75%",
+    "Migrate Pydantic validators to V2 (@field_validator instead of @validator)"
+  ]
+}

@@ -1,0 +1,33 @@
+[tool.pytest.ini_options]
+minversion = "7.0"
+testpaths = ["tests"]
+python_files = ["test_*.py", "*_test.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = [
+    "-v",
+    "--strict-markers",
+    "--tb=short",
+    "--cov=src",
+    "--cov-report=term-missing",
+    "-m", "not requires_services",  # Skip service-dependent tests by default
+]
+markers = [
+    "unit: Unit tests (no external dependencies)",
+    "integration: Integration tests (requires services)",
+    "e2e: End-to-end tests (requires all services + database)",
+    "slow: Slow running tests (>5 seconds)",
+    "performance: Performance and load tests",
+    "endurance: Long-running endurance tests (>1 hour)",
+    "requires_services: Test requires external services to be running",
+    "requires_graphrag: Test requires GraphRAG service (port 8010)",
+    "requires_database: Test requires Supabase database",
+]
+
+[tool.pytest_asyncio]
+asyncio_mode = "strict"  # Use strict mode for better error detection
+asyncio_default_fixture_loop_scope = "session"  # Use session-scoped event loop for fixtures
+
+[build-system]
+requires = ["setuptools>=45", "wheel", "setuptools_scm[toml]>=6.2"]
+build-backend = "setuptools.build_meta"

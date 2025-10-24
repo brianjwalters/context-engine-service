@@ -1,0 +1,424 @@
+###############################################################################
+# Context Engine Service - Prometheus Alert Rules
+#
+# Purpose: Production monitoring alerts for Context Engine
+# Integration: Prometheus + Alertmanager
+# Notification: Slack, PagerDuty, Email
+#
+# Alert Severity Levels:
+#   - critical: Immediate action required (PagerDuty)
+#   - warning: Investigation needed (Slack)
+#   - info: Awareness only (Email)
+###############################################################################
+
+groups:
+  - name: context_engine_service
+    interval: 30s
+    rules:
+
+      #########################################################################
+      # Service Availability Alerts
+      #########################################################################
+
+      - alert: ContextEngineServiceDown
+        expr: up{job="context-engine"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: context-engine
+          component: availability
+        annotations:
+          summary: "Context Engine service is down"
+          description: "Context Engine service (port 8015) has been down for more than 1 minute. Immediate investigation required."
+          runbook_url: "https://docs.luris.ai/runbooks/context-engine-down"
+          dashboard_url: "https://grafana.luris.ai/d/context-engine"
+
+      - alert: ContextEngineHighRestartRate
+        expr: rate(process_start_time_seconds{job="context-engine"}[15m]) > 3
+        for: 5m
+        labels:
+          severity: warning
+          service: context-engine
+          component: stability
+        annotations:
+          summary: "Context Engine restarting frequently"
+          description: "Context Engine has restarted {{ $value }} times in the last 15 minutes. Check for crashes or OOM kills."
+
+      #########################################################################
+      # Performance Alerts
+      #########################################################################
+
+      - alert: ContextEngineHighLatency
+        expr: histogram_quantile(0.95, rate(context_engine_request_latency_seconds_bucket[5m])) > 3.0
+        for: 5m
+        labels:
+          severity: warning
+          service: context-engine
+          component: performance
+        annotations:
+          summary: "Context Engine P95 latency > 3s"
+          description: "P95 request latency is {{ $value }}s (threshold: 3s). Check for slow GraphRAG queries or database issues."
+
+      - alert: ContextEngineVeryHighLatency
+        expr: histogram_quantile(0.99, rate(context_engine_request_latency_seconds_bucket[5m])) > 10.0
+        for: 2m
+        labels:
+          severity: critical
+          service: context-engine
+          component: performance
+        annotations:
+          summary: "Context Engine P99 latency > 10s"
+          description: "P99 request latency is {{ $value }}s (threshold: 10s). Severe performance degradation detected."
+
+      - alert: ContextEngineSlowComprehensiveContext
+        expr: histogram_quantile(0.95, rate(context_engine_comprehensive_context_latency_seconds_bucket[5m])) > 5.0
+        for: 5m
+        labels:
+          severity: warning
+          service: context-engine
+          component: performance
+        annotations:
+          summary: "Comprehensive context retrieval slow (P95 > 5s)"
+          description: "Comprehensive context retrieval P95 latency is {{ $value }}s. Expected <2s for optimal UX."
+
+      #########################################################################
+      # Error Rate Alerts
+      #########################################################################
+
+      - alert: ContextEngineHighErrorRate
+        expr: |
+          sum(rate(context_engine_requests_total{status=~"5.."}[5m])) /
+          sum(rate(context_engine_requests_total[5m])) > 0.05
+        for: 5m
+        labels:
+          severity: warning
+          service: context-engine
+          component: reliability
+        annotations:
+          summary: "Context Engine error rate > 5%"
+          description: "Error rate is {{ $value | humanizePercentage }} (threshold: 5%). Check service logs and dependencies."
+
+      - alert: ContextEngineCriticalErrorRate
+        expr: |
+          sum(rate(context_engine_requests_total{status=~"5.."}[5m])) /
+          sum(rate(context_engine_requests_total[5m])) > 0.20
+        for: 2m
+        labels:
+          severity: critical
+          service: context-engine
+          component: reliability
+        annotations:
+          summary: "Context Engine error rate > 20%"
+          description: "Critical error rate: {{ $value | humanizePercentage }}. Service severely degraded."
+
+      - alert: ContextEngineGraphRAGErrors
+        expr: sum(rate(context_engine_graphrag_errors_total[5m])) > 1
+        for: 5m
+        labels:
+          severity: warning
+          service: context-engine
+          component: integration
+        annotations:
+          summary: "GraphRAG integration errors detected"
+          description: "{{ $value }} GraphRAG errors/sec. Check GraphRAG service health (port 8010)."
+
+      #########################################################################
+      # Cache Performance Alerts
+      #########################################################################
+
+      - alert: ContextEngineLowCacheHitRate
+        expr: |
+          sum(rate(context_engine_cache_hits_total[10m])) /
+          sum(rate(context_engine_cache_requests_total[10m])) < 0.50
+        for: 10m
+        labels:
+          severity: warning
+          service: context-engine
+          component: cache
+        annotations:
+          summary: "Cache hit rate < 50%"
+          description: "Cache hit rate is {{ $value | humanizePercentage }} (target: >70%). Consider cache warmup or size increase."
+
+      - alert: ContextEngineCacheNearFull
+        expr: context_engine_cache_utilization > 0.95
+        for: 5m
+        labels:
+          severity: warning
+          service: context-engine
+          component: cache
+        annotations:
+          summary: "Cache utilization > 95%"
+          description: "Cache is {{ $value | humanizePercentage }} full. Evictions may increase, impacting performance."
+
+      - alert: ContextEngineCacheHighEvictionRate
+        expr: rate(context_engine_cache_evictions_total[5m]) > 10
+        for: 5m
+        labels:
+          severity: info
+          service: context-engine
+          component: cache
+        annotations:
+          summary: "High cache eviction rate"
+          description: "Cache evicting {{ $value }} entries/sec. Consider increasing cache size."
+
+      #########################################################################
+      # Resource Utilization Alerts
+      #########################################################################
+
+      - alert: ContextEngineHighMemoryUsage
+        expr: |
+          process_resident_memory_bytes{job="context-engine"} /
+          (2 * 1024 * 1024 * 1024) > 0.90
+        for: 5m
+        labels:
+          severity: warning
+          service: context-engine
+          component: resources
+        annotations:
+          summary: "Memory usage > 90% of 2GB limit"
+          description: "Memory usage is {{ $value | humanizePercentage }} of limit. Risk of OOM kill."
+
+      - alert: ContextEngineHighCPUUsage
+        expr: rate(process_cpu_seconds_total{job="context-engine"}[5m]) > 1.8
+        for: 10m
+        labels:
+          severity: warning
+          service: context-engine
+          component: resources
+        annotations:
+          summary: "CPU usage > 180% (90% of 200% limit)"
+          description: "CPU usage is {{ $value | humanize }}. Check for expensive operations or increased load."
+
+      - alert: ContextEngineHighConnectionPoolUsage
+        expr: context_engine_connection_pool_utilization > 0.85
+        for: 5m
+        labels:
+          severity: warning
+          service: context-engine
+          component: database
+        annotations:
+          summary: "Connection pool > 85% utilized"
+          description: "Database connection pool is {{ $value | humanizePercentage }} full. May need to increase pool size."
+
+      #########################################################################
+      # Dependency Health Alerts
+      #########################################################################
+
+      - alert: ContextEngineGraphRAGUnhealthy
+        expr: context_engine_dependency_health{dependency="graphrag"} == 0
+        for: 2m
+        labels:
+          severity: critical
+          service: context-engine
+          component: dependencies
+        annotations:
+          summary: "GraphRAG service unhealthy"
+          description: "GraphRAG service (port 8010) is unhealthy or unreachable. Context retrieval will fail."
+
+      - alert: ContextEngineSupabaseUnhealthy
+        expr: context_engine_dependency_health{dependency="supabase"} == 0
+        for: 2m
+        labels:
+          severity: critical
+          service: context-engine
+          component: dependencies
+        annotations:
+          summary: "Supabase database unhealthy"
+          description: "Supabase database is unhealthy or unreachable. Context retrieval will fail."
+
+      - alert: ContextEnginePromptServiceUnhealthy
+        expr: context_engine_dependency_health{dependency="prompt-service"} == 0
+        for: 5m
+        labels:
+          severity: warning
+          service: context-engine
+          component: dependencies
+        annotations:
+          summary: "Prompt Service unhealthy"
+          description: "Prompt Service (port 8003) is unhealthy. AI-enhanced features may be impacted."
+
+      #########################################################################
+      # Business Logic Alerts
+      #########################################################################
+
+      - alert: ContextEngineLowDimensionQuality
+        expr: context_engine_dimension_quality_score < 0.70
+        for: 10m
+        labels:
+          severity: warning
+          service: context-engine
+          component: quality
+        annotations:
+          summary: "Dimension quality score < 0.70"
+          description: "WHO/WHAT/WHERE/WHEN/WHY dimension quality is {{ $value }}. Check for data quality issues."
+
+      - alert: ContextEngineHighIncompleteContextRate
+        expr: |
+          sum(rate(context_engine_incomplete_contexts_total[10m])) /
+          sum(rate(context_engine_contexts_total[10m])) > 0.30
+        for: 10m
+        labels:
+          severity: warning
+          service: context-engine
+          component: quality
+        annotations:
+          summary: "Incomplete context rate > 30%"
+          description: "{{ $value | humanizePercentage }} of contexts are incomplete. Check GraphRAG data availability."
+
+      #########################################################################
+      # Traffic Alerts
+      #########################################################################
+
+      - alert: ContextEngineHighRequestRate
+        expr: sum(rate(context_engine_requests_total[5m])) > 100
+        for: 5m
+        labels:
+          severity: info
+          service: context-engine
+          component: traffic
+        annotations:
+          summary: "High request rate (> 100 req/s)"
+          description: "Request rate is {{ $value }} req/s. Monitor for performance degradation."
+
+      - alert: ContextEngineUnusualTrafficSpike
+        expr: |
+          sum(rate(context_engine_requests_total[1m])) >
+          3 * sum(rate(context_engine_requests_total[1h] offset 1h))
+        for: 2m
+        labels:
+          severity: warning
+          service: context-engine
+          component: traffic
+        annotations:
+          summary: "Unusual traffic spike detected"
+          description: "Request rate is 3x higher than usual. Possible attack or legitimate spike."
+
+      - alert: ContextEngineNoTraffic
+        expr: sum(rate(context_engine_requests_total[10m])) == 0
+        for: 10m
+        labels:
+          severity: warning
+          service: context-engine
+          component: traffic
+        annotations:
+          summary: "No traffic received for 10 minutes"
+          description: "Context Engine has received no requests. Check if service is properly registered or if there's an upstream issue."
+
+      #########################################################################
+      # Degradation Alerts (Composite)
+      #########################################################################
+
+      - alert: ContextEngineServiceDegraded
+        expr: |
+          (
+            (histogram_quantile(0.95, rate(context_engine_request_latency_seconds_bucket[5m])) > 2.0) or
+            (sum(rate(context_engine_requests_total{status=~"5.."}[5m])) / sum(rate(context_engine_requests_total[5m])) > 0.10) or
+            (sum(rate(context_engine_cache_hits_total[10m])) / sum(rate(context_engine_cache_requests_total[10m])) < 0.30)
+          )
+        for: 5m
+        labels:
+          severity: warning
+          service: context-engine
+          component: overall
+        annotations:
+          summary: "Context Engine service degraded"
+          description: "Service showing signs of degradation: high latency, errors, or low cache performance."
+
+      - alert: ContextEngineServiceCritical
+        expr: |
+          (
+            (histogram_quantile(0.99, rate(context_engine_request_latency_seconds_bucket[5m])) > 15.0) or
+            (sum(rate(context_engine_requests_total{status=~"5.."}[5m])) / sum(rate(context_engine_requests_total[5m])) > 0.30) or
+            (context_engine_dependency_health{dependency="graphrag"} == 0) or
+            (context_engine_dependency_health{dependency="supabase"} == 0)
+          )
+        for: 2m
+        labels:
+          severity: critical
+          service: context-engine
+          component: overall
+        annotations:
+          summary: "Context Engine service in critical state"
+          description: "Service experiencing critical issues: extreme latency, high errors, or dependency failures."
+
+      #########################################################################
+      # SLA Compliance Alerts
+      #########################################################################
+
+      - alert: ContextEngineSLAViolation
+        expr: |
+          (
+            histogram_quantile(0.95, rate(context_engine_request_latency_seconds_bucket[5m])) > 2.0 or
+            sum(rate(context_engine_requests_total{status=~"5.."}[5m])) / sum(rate(context_engine_requests_total[5m])) > 0.01
+          )
+        for: 10m
+        labels:
+          severity: warning
+          service: context-engine
+          component: sla
+        annotations:
+          summary: "SLA violation detected"
+          description: "Service not meeting SLA: P95 latency >2s or error rate >1%."
+
+      #########################################################################
+      # Data Quality Alerts
+      #########################################################################
+
+      - alert: ContextEngineEmptyContextResults
+        expr: rate(context_engine_empty_contexts_total[10m]) > 0.5
+        for: 10m
+        labels:
+          severity: warning
+          service: context-engine
+          component: quality
+        annotations:
+          summary: "High rate of empty context results"
+          description: "{{ $value }} empty contexts/sec. Check GraphRAG data completeness and query patterns."
+
+      - alert: ContextEngineLowWHODimensionQuality
+        expr: context_engine_dimension_quality_score{dimension="who"} < 0.60
+        for: 15m
+        labels:
+          severity: info
+          service: context-engine
+          component: quality
+        annotations:
+          summary: "WHO dimension quality < 60%"
+          description: "WHO dimension (parties/attorneys) quality is {{ $value }}. Check entity extraction completeness."
+
+      - alert: ContextEngineLowWHATDimensionQuality
+        expr: context_engine_dimension_quality_score{dimension="what"} < 0.60
+        for: 15m
+        labels:
+          severity: info
+          service: context-engine
+          component: quality
+        annotations:
+          summary: "WHAT dimension quality < 60%"
+          description: "WHAT dimension (legal issues) quality is {{ $value }}. Check legal concept extraction."
+
+      #########################################################################
+      # Rate Limiting Alerts
+      #########################################################################
+
+      - alert: ContextEngineRateLimitHit
+        expr: rate(context_engine_rate_limit_hits_total[5m]) > 1
+        for: 5m
+        labels:
+          severity: info
+          service: context-engine
+          component: rate-limiting
+        annotations:
+          summary: "Rate limiting triggered"
+          description: "{{ $value }} rate limit hits/sec. Client may need to implement backoff."
+
+      - alert: ContextEngineHighRateLimitHits
+        expr: rate(context_engine_rate_limit_hits_total[5m]) > 10
+        for: 5m
+        labels:
+          severity: warning
+          service: context-engine
+          component: rate-limiting
+        annotations:
+          summary: "High rate of rate limit hits"
+          description: "{{ $value }} rate limit hits/sec. Possible abuse or misconfigured client."

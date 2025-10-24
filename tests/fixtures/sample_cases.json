@@ -1,0 +1,27 @@
+{
+  "sample_cases": [
+    {
+      "case_id": "case-001",
+      "client_id": "client-abc",
+      "case_name": "Smith v. Jones",
+      "status": "active",
+      "jurisdiction": "federal",
+      "court": "United States District Court for the Northern District of California",
+      "filing_date": "2025-01-15",
+      "case_type": "civil",
+      "practice_area": "employment law"
+    },
+    {
+      "case_id": "case-002",
+      "client_id": "client-abc",
+      "case_name": "ACME Corp v. Widget Inc.",
+      "status": "closed",
+      "jurisdiction": "state",
+      "court": "Superior Court of California, County of San Francisco",
+      "filing_date": "2024-06-01",
+      "closing_date": "2024-12-15",
+      "case_type": "civil",
+      "practice_area": "contract dispute"
+    }
+  ]
+}

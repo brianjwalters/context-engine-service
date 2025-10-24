@@ -1,0 +1,79 @@
+{
+  "metadata": {
+    "execution_time": "2025-10-23T14:00:01.172063",
+    "test_runner_version": "1.0.0",
+    "project": "context-engine-service",
+    "environment": "e2e"
+  },
+  "service_health": {
+    "skipped": true
+  },
+  "test_results": {
+    "exit_code": 4,
+    "duration_seconds": 1.5039350986480713,
+    "stdout": "",
+    "stderr": "ERROR: usage: pytest [options] [file_or_dir] [file_or_dir] [...]\npytest: error: unrecognized arguments: --json-report --json-report-file=/srv/luris/be/context-engine-service/tests/results/test_report.json\n  inifile: /srv/luris/be/context-engine-service/pyproject.toml\n  rootdir: /srv/luris/be/context-engine-service\n\n",
+    "test_results": {
+      "summary": {
+        "total": 0,
+        "passed": 0,
+        "failed": 0,
+        "error": "Test report not generated"
+      }
+    }
+  },
+  "performance_metrics": {},
+  "dimension_samples": {
+    "who": {
+      "courts": [],
+      "parties": [],
+      "judges": [],
+      "attorneys": []
+    },
+    "what": {
+      "statutes": [],
+      "case_citations": [],
+      "legal_issues": [],
+      "causes_of_action": []
+    },
+    "where": {
+      "jurisdictions": [],
+      "venues": [],
+      "courts": []
+    },
+    "when": {
+      "dates": [],
+      "deadlines": [],
+      "timeline_events": []
+    },
+    "why": {
+      "precedents": [],
+      "legal_theories": [],
+      "arguments": [],
+      "reasoning": []
+    }
+  },
+  "coverage": {
+    "error": "Coverage report not found"
+  },
+  "summary": {
+    "test_counts": {
+      "total": 0,
+      "passed": 0,
+      "failed": 0,
+      "skipped": 0,
+      "pass_rate_percent": 0
+    },
+    "performance": {
+      "avg_response_time_s": 0,
+      "max_response_time_s": 0,
+      "min_response_time_s": 0,
+      "p50_s": 0,
+      "p95_s": 0,
+      "p99_s": 0,
+      "endpoint_performance": {}
+    },
+    "duration": 1.5,
+    "failed_tests": []
+  }
+}

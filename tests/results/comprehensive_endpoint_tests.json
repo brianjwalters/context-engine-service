@@ -1,0 +1,61 @@
+{
+  "test_run_metadata": {
+    "total_tests": 2,
+    "total_endpoints_tested": 2,
+    "start_time": "2025-10-23T13:51:35.084041",
+    "end_time": "2025-10-23T13:51:35.943743",
+    "duration_seconds": 0.8597052097320557,
+    "test_suite": "Context Engine Comprehensive Endpoint Tests",
+    "test_environment": "Real Services (GraphRAG + Supabase + vLLM)"
+  },
+  "endpoint_coverage": {
+    "GET /api/v1/health": 1,
+    "GET /": 1
+  },
+  "results": [
+    {
+      "endpoint": "GET /api/v1/health",
+      "test": "basic_health_check",
+      "status_code": 200,
+      "response_time_ms": 24.37424659729004,
+      "health_data": {
+        "status": "healthy",
+        "service": "context-engine",
+        "port": 8015,
+        "version": "1.0.0"
+      },
+      "timestamp": "2025-10-23T13:51:35.138915",
+      "test_execution_time": 0.05488157272338867
+    },
+    {
+      "endpoint": "GET /",
+      "test": "root_service_info",
+      "status_code": 200,
+      "response_time_ms": 6.2961578369140625,
+      "service_info": {
+        "service": "context-engine-service",
+        "version": "1.0.0",
+        "port": 8015,
+        "status": "running",
+        "description": "Case-centric context retrieval using WHO/WHAT/WHERE/WHEN/WHY framework",
+        "endpoints": {
+          "docs": "/docs",
+          "redoc": "/redoc",
+          "health": "/api/v1/health",
+          "metrics": "/metrics"
+        }
+      },
+      "timestamp": "2025-10-23T13:51:35.940484",
+      "test_execution_time": 0.856452226638794
+    }
+  ],
+  "statistics": {
+    "total_tests": 2,
+    "passed_tests": 2,
+    "failed_tests": 0,
+    "pass_rate": 1.0,
+    "avg_response_time_ms": 15.33520221710205,
+    "min_response_time_ms": 6.2961578369140625,
+    "max_response_time_ms": 24.37424659729004
+  }
+}

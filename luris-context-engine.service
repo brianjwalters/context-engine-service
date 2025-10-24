@@ -1,0 +1,66 @@
+[Unit]
+Description=Luris Context Engine Service (Port 8015)
+Documentation=https://github.com/brianjwalters/context-engine-service
+After=network.target postgresql.service
+
+[Service]
+Type=simple
+User=ubuntu
+Group=ubuntu
+WorkingDirectory=/srv/luris/be/context-engine-service
+
+# Environment configuration
+Environment="PORT=8015"
+Environment="SERVICE_NAME=context-engine"
+Environment="LOG_LEVEL=INFO"
+Environment="PYTHONUNBUFFERED=1"
+
+# GraphRAG integration
+Environment="GRAPHRAG_BASE_URL=http://10.10.0.87:8010"
+Environment="GRAPHRAG_TIMEOUT=20"
+
+# Supabase integration (SENSITIVE - should use env file)
+# Environment="SUPABASE_URL=your-project.supabase.co"
+# Environment="SUPABASE_KEY=your-service-role-key"
+
+# Cache configuration
+Environment="ENABLE_MEMORY_CACHE=true"
+Environment="ENABLE_REDIS_CACHE=false"
+Environment="ENABLE_DB_CACHE=false"
+Environment="CACHE_MEMORY_TTL=600"
+Environment="CACHE_ACTIVE_CASE_TTL=3600"
+Environment="CACHE_CLOSED_CASE_TTL=86400"
+Environment="CACHE_MAX_SIZE=1000"
+
+# Load sensitive environment variables from file (recommended)
+EnvironmentFile=-/srv/luris/be/context-engine-service/.env
+
+# Start command
+ExecStart=/srv/luris/be/context-engine-service/venv/bin/python \
+  /srv/luris/be/context-engine-service/run.py
+
+# Restart policy
+Restart=always
+RestartSec=10
+StartLimitInterval=60
+StartLimitBurst=3
+
+# Resource limits
+LimitNOFILE=4096
+MemoryMax=2G
+CPUQuota=200%
+
+# Logging
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=luris-context-engine
+
+# Security hardening
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/srv/luris/be/context-engine-service/logs
+
+[Install]
+WantedBy=multi-user.target
