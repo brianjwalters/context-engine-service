@@ -103,6 +103,13 @@ Service will start on `http://0.0.0.0:8015`
 
 ## API Documentation
 
+### Complete Documentation Suite
+
+- **[API Reference](api.md)** - Complete API documentation with Python + TypeScript examples (16 endpoints, 100% coverage)
+- **[Dimension Reference](DIMENSION_REFERENCE.md)** - Complete WHO/WHAT/WHERE/WHEN/WHY framework guide
+- **[Error Handling Guide](ERROR_HANDLING.md)** - Comprehensive error scenarios and recovery strategies
+- **[Usage Guide](USAGE_GUIDE.md)** - Getting started and common usage patterns
+
 ### Interactive Documentation
 
 - **Swagger UI**: http://localhost:8015/docs
